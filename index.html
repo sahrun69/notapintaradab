@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Aplikasi Interaktif Adab Islam Kanak-Kanak</title>
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+      --primary: #FF7B9C;
+      --primary-hover: #FF537C;
+      --secondary: #4ECDC4;
+      --accent: #FFD166;
+      --purple: #9B51E0;
+      --text-dark: #2D3142;
+      --text-muted: #6C757D;
+      --card-bg: #FFFFFF;
+      --correct: #2ECC71;
+      --wrong: #FF5252;
+      --shadow: 0 10px 25px rgba(0,0,0,0.08);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #E0F7FA;
+      background-image: radial-gradient(#B2EBF2 2px, transparent 2px);
+      background-size: 24px 24px;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    /* 9:16 Mobile Outer Frame Container */
+    .phone-wrapper {
+      width: 100%;
+      max-width: 420px;
+      height: 92vh;
+      max-height: 860px;
+      background: #2D3142;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 10px #FFFFFF inset;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Inner Screen Frame */
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-gradient);
+      border-radius: 30px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Header Bar */
+    .app-header {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      z-index: 10;
+    }
+
+    .app-title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(255, 123, 156, 0.4);
+    }
+
+    .app-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .header-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #F0F4F8;
+      color: var(--text-dark);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: #E0E0E0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      width: 4%;
+      transition: width 0.3s ease;
+    }
+
+    /* Main Content Area */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      scroll-behavior: smooth;
+    }
+
+    .content-area::-webkit-scrollbar {
+      width: 4px;
+    }
+    .content-area::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+
+    /* Chapter Card Header */
+    .chapter-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #855B00;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 5px rgba(255, 209, 102, 0.4);
+    }
+
+    .chapter-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 20px;
+      color: var(--text-dark);
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    /* Section Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 15px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Tap-to-reveal Interactive Cards */
+    .reveal-card {
+      background: #FFF9E6;
+      border: 2px dashed #FFE082;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .reveal-card.revealed {
+      background: #FFFFFF;
+      border-style: solid;
+      border-color: var(--secondary);
+      text-align: left;
+    }
+
+    .reveal-hint {
+      color: #D97706;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .reveal-content {
+      display: none;
+    }
+
+    .reveal-card.revealed .reveal-hint {
+      display: none;
+    }
+
+    .reveal-card.revealed .reveal-content {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Arabic Box */
+    .arabic-box {
+      background: #F0F9FF;
+      border-right: 4px solid #0284C7;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 10px 0;
+      text-align: right;
+    }
+
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      font-size: 22px;
+      line-height: 1.8;
+      color: #0369A1;
+      direction: rtl;
+      margin-bottom: 6px;
+    }
+
+    .translation-text {
+      font-size: 13px;
+      color: #475569;
+      font-style: italic;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    /* List Items */
+    .custom-list {
+      list-style: none;
+    }
+
+    .custom-list li {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--text-dark);
+    }
+
+    .custom-list li::before {
+      content: "\f00c";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      top: 2px;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .bad-list li::before {
+      content: "\f00d";
+      color: var(--wrong);
+    }
+
+    .badge-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      margin: 2px 4px 2px 0;
+      background: #E2E8F0;
+      color: #475569;
+    }
+
+    .badge-green { background: #D1FAE5; color: #065F46; }
+    .badge-red { background: #FEE2E2; color: #991B1B; }
+    .badge-blue { background: #E0F2FE; color: #075985; }
+
+    /* Footer Navigation */
+    .app-footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .nav-btn {
+      flex: 1;
+      height: 44px;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .btn-prev {
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    .btn-next {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-quiz {
+      background: var(--accent);
+      color: #78350F;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Modal Component */
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      height: 85%;
+      margin-top: auto;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #F1F5F9;
+    }
+
+    .modal-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      color: var(--text-dark);
+    }
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 4px;
+    }
+
+    .chapter-select-item {
+      padding: 12px 14px;
+      background: #F8FAFC;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .chapter-select-item.active {
+      background: #EEF2FF;
+      border-color: #6366F1;
+      color: #4338CA;
+    }
+
+    /* Quiz Screen Components */
+    .quiz-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .quiz-q-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .quiz-q-text {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      color: var(--text-dark);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .quiz-option {
+      width: 100%;
+      padding: 12px 14px;
+      background: #F8FAFC;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quiz-option:active {
+      transform: scale(0.98);
+    }
+
+    .quiz-option.correct-opt {
+      background: #DCFCE7;
+      border-color: #22C55E;
+      color: #15803D;
+    }
+
+    .quiz-option.wrong-opt {
+      background: #FEE2E2;
+      border-color: #EF4444;
+      color: #B91C1C;
+    }
+
+    .explanation-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .explanation-box.correct {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #166534;
+    }
+
+    .explanation-box.wrong {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+
+    /* Quiz Result Screen */
+    .result-box {
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    .result-stars {
+      font-size: 36px;
+      color: #F59E0B;
+      margin-bottom: 12px;
+    }
+
+    .result-score {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 42px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .result-percent {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+  
+/* ============================================================
+   KANAK-KANAK UI REDESIGN v2
+   Fokus: 9-12 tahun | ceria | mudah baca | mesra sentuhan
+   ============================================================ */
+:root{
+  --bg-gradient:linear-gradient(145deg,#FFF8E7 0%,#E8F8FF 48%,#F3E8FF 100%);
+  --primary:#6C63FF;
+  --primary-hover:#554BE8;
+  --secondary:#20C997;
+  --accent:#FFD93D;
+  --purple:#A855F7;
+  --text-dark:#263238;
+  --text-muted:#64748B;
+  --card-bg:#FFFFFF;
+  --correct:#22C55E;
+  --wrong:#FF5C70;
+  --shadow:0 8px 0 rgba(55,65,81,.08),0 14px 30px rgba(99,102,241,.10);
+  --radius:24px;
+}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:#FFF7D6;
+  background-image:
+    radial-gradient(circle at 10% 15%,rgba(255,217,61,.35) 0 7px,transparent 8px),
+    radial-gradient(circle at 88% 12%,rgba(108,99,255,.20) 0 6px,transparent 7px),
+    radial-gradient(circle at 15% 88%,rgba(32,201,151,.20) 0 8px,transparent 9px),
+    radial-gradient(circle at 90% 82%,rgba(255,92,112,.16) 0 7px,transparent 8px);
+  background-size:120px 120px,160px 160px,190px 190px,150px 150px;
+}
+
+.phone-wrapper{
+  max-width:430px;
+  height:94vh;
+  max-height:900px;
+  background:linear-gradient(145deg,#4338CA,#7C3AED);
+  border-radius:42px;
+  padding:9px;
+  box-shadow:0 24px 0 rgba(67,56,202,.16),0 30px 60px rgba(30,41,59,.25);
+}
+
+.phone-screen{
+  background:var(--bg-gradient);
+  border-radius:34px;
+}
+
+.app-header{
+  background:rgba(255,255,255,.96);
+  padding:11px 14px;
+  border-bottom:3px solid rgba(108,99,255,.08);
+}
+
+.app-title-box{gap:9px}
+
+.app-icon{
+  width:42px;height:42px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#6C63FF,#A855F7);
+  box-shadow:0 5px 0 rgba(76,63,180,.18);
+  font-size:19px;
+}
+
+.app-title{
+  font-family:'Fredoka',sans-serif;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+
+.app-title::after{
+  content:' ✨';
+  font-size:13px;
+}
+
+.icon-btn{
+  width:40px;height:40px;
+  border-radius:14px;
+  background:#F1F5FF;
+  color:#4F46E5;
+  box-shadow:0 3px 0 rgba(79,70,229,.08);
+}
+
+.icon-btn:active{transform:translateY(2px) scale(.96)}
+
+.progress-container{
+  height:10px;
+  background:#E9EAFB;
+}
+
+.progress-bar{
+  background:linear-gradient(90deg,#20C997,#6C63FF,#A855F7);
+  border-radius:0 10px 10px 0;
+}
+
+.content-area{
+  padding:18px 15px 22px;
+}
+
+/* Chapter heading becomes a colourful "lesson card" */
+.chapter-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#FFF0A8;
+  color:#7C5B00;
+  border:2px solid #FFE071;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:11px;
+  box-shadow:0 4px 0 rgba(234,179,8,.12);
+}
+
+.chapter-title{
+  font-family:'Fredoka',sans-serif;
+  font-size:26px;
+  line-height:1.18;
+  margin:10px 2px 18px;
+  color:#312E81;
+  letter-spacing:.1px;
+}
+
+/* Add a playful underline */
+.chapter-title::after{
+  content:'';
+  display:block;
+  width:62px;
+  height:6px;
+  margin-top:9px;
+  border-radius:99px;
+  background:linear-gradient(90deg,#FFD93D,#FF8FAB);
+}
+
+.card{
+  border:2px solid rgba(255,255,255,.95);
+  border-radius:22px;
+  padding:17px;
+  margin-bottom:15px;
+  box-shadow:var(--shadow);
+}
+
+.card-title{
+  font-family:'Fredoka',sans-serif;
+  font-size:17px;
+  color:#4F46E5;
+  margin-bottom:12px;
+}
+
+.custom-list li{
+  padding-left:30px;
+  margin-bottom:10px;
+  font-size:15px;
+  line-height:1.52;
+}
+
+.custom-list li::before{
+  content:"✓";
+  font-family:'Nunito',sans-serif;
+  font-size:12px;
+  font-weight:900;
+  color:#fff;
+  background:#20C997;
+  width:21px;height:21px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  top:1px;
+}
+
+.bad-list li::before{
+  content:"!";
+  background:#FF6B7A;
+}
+
+.badge-tag{
+  padding:7px 10px;
+  border-radius:12px;
+  font-size:12px;
+  margin:3px 5px 3px 0;
+  border:1px solid rgba(99,102,241,.08);
+}
+
+/* Tap-to-reveal looks like a game card */
+.reveal-card{
+  background:linear-gradient(135deg,#FFFBEA,#FFF4C7);
+  border:3px dashed #FFD43B;
+  border-radius:22px;
+  padding:17px;
+  box-shadow:0 7px 0 rgba(234,179,8,.10);
+}
+
+.reveal-hint{
+  color:#8A6200;
+  font-size:14px;
+  font-weight:800;
+  min-height:30px;
+}
+
+.reveal-hint i{
+  background:#FFD93D;
+  color:#7C5B00;
+  width:29px;height:29px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.reveal-card.revealed{
+  border-style:solid;
+  border-color:#20C997;
+  background:#F2FFFB;
+}
+
+/* Arabic / doa card */
+.arabic-box{
+  background:linear-gradient(135deg,#EFF8FF,#F4F0FF);
+  border-right:0;
+  border-left:6px solid #6C63FF;
+  border-radius:17px;
+  padding:15px;
+}
+
+.arabic-text{
+  font-size:25px;
+  line-height:1.9;
+  color:#3730A3;
+}
+
+.translation-text{
+  font-size:13px;
+  line-height:1.55;
+}
+
+/* Bottom navigation */
+.app-footer{
+  background:rgba(255,255,255,.97);
+  padding:10px 12px 12px;
+  gap:8px;
+  border-top:2px solid rgba(108,99,255,.08);
+}
+
+.nav-btn{
+  min-height:48px;
+  height:48px;
+  border-radius:16px;
+  font-family:'Fredoka',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  box-shadow:0 5px 0 rgba(51,65,85,.10);
+}
+
+.btn-prev{background:#EEF2F7;color:#475569}
+.btn-next{
+  background:linear-gradient(135deg,#6C63FF,#8B5CF6);
+  color:white;
+}
+.btn-quiz{
+  background:linear-gradient(135deg,#FFD93D,#FFC83D);
+  color:#6B4F00;
+}
+
+.nav-btn:active{
+  transform:translateY(3px) scale(.98);
+  box-shadow:0 2px 0 rgba(51,65,85,.08);
+}
+
+/* Menu */
+.modal-overlay{
+  background:rgba(30,41,59,.52);
+}
+
+.modal-content{
+  height:88%;
+  padding:18px 15px 14px;
+  border-top-left-radius:32px;
+  border-top-right-radius:32px;
+  background:linear-gradient(180deg,#FFFDF8,#F4F7FF);
+}
+
+.modal-title{
+  font-size:21px;
+  color:#312E81;
+}
+
+.chapter-grid{gap:10px}
+
+.chapter-select-item{
+  min-height:58px;
+  padding:11px 13px;
+  border:2px solid #E8EAF7;
+  border-radius:17px;
+  background:#fff;
+  font-size:14px;
+  box-shadow:0 3px 0 rgba(51,65,85,.05);
+}
+
+.chapter-select-item::before{
+  content:'📖';
+  margin-right:9px;
+  font-size:20px;
+}
+
+.chapter-select-item.active{
+  background:#EEF2FF;
+  border-color:#8B5CF6;
+  color:#4338CA;
+  box-shadow:0 4px 0 rgba(99,102,241,.12);
+}
+
+/* Quiz */
+.quiz-card{
+  border-radius:24px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  border:2px solid #fff;
+}
+
+.quiz-q-num{
+  display:inline-block;
+  background:#EDE9FE;
+  color:#6D28D9;
+  padding:6px 9px;
+  border-radius:10px;
+  font-size:11px;
+}
+
+.quiz-q-text{
+  font-family:'Fredoka',sans-serif;
+  font-size:20px;
+  line-height:1.35;
+  color:#312E81;
+  margin:14px 0 17px;
+}
+
+.quiz-option{
+  min-height:56px;
+  padding:12px 13px;
+  background:#F8FAFF;
+  border:2px solid #E2E8F0;
+  border-radius:17px;
+  font-size:15px;
+  line-height:1.35;
+  margin-bottom:11px;
+  box-shadow:0 3px 0 rgba(51,65,85,.05);
+}
+
+.quiz-option > span{
+  flex:0 0 31px !important;
+  width:31px !important;
+  height:31px !important;
+  background:#EDE9FE !important;
+  color:#5B21B6;
+}
+
+.quiz-option.correct-opt{
+  background:#DCFCE7;
+  border-color:#22C55E;
+  box-shadow:0 4px 0 rgba(34,197,94,.14);
+}
+
+.quiz-option.wrong-opt{
+  background:#FFE4E8;
+  border-color:#FF5C70;
+  box-shadow:0 4px 0 rgba(255,92,112,.12);
+}
+
+.explanation-box{
+  border-radius:16px;
+  padding:14px;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.explanation-box.correct{background:#ECFDF5;border:2px solid #86EFAC}
+.explanation-box.wrong{background:#FFF1F2;border:2px solid #FDA4AF}
+
+.result-box{
+  padding:27px 17px;
+  background:linear-gradient(145deg,#fff,#FFF9D9);
+}
+
+.result-stars{
+  font-size:42px;
+  letter-spacing:4px;
+}
+
+.result-score{
+  font-size:50px;
+  color:#6C63FF;
+}
+
+.result-percent{
+  font-size:17px;
+}
+
+/* Touch friendliness */
+button,.reveal-card,.chapter-select-item{touch-action:manipulation}
+
+@media (max-width:500px){
+  body{padding:0}
+  .phone-wrapper{
+    width:100%;
+    max-width:none;
+    height:100vh;
+    max-height:none;
+    border-radius:0;
+    padding:0;
+    box-shadow:none;
+  }
+  .phone-screen{border-radius:0}
+}
+
+@media (min-width:501px){
+  .phone-screen{box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+}
+
+  
+.lesson-kicker{
+  display:inline-block;
+  margin:2px 0 0 2px;
+  padding:6px 10px;
+  border-radius:10px;
+  background:#E8FFF6;
+  color:#087F5B;
+  font-family:'Fredoka',sans-serif;
+  font-size:12px;
+  font-weight:700;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Phone Container (9:16 Ratio Frame) -->
+  <div class="phone-wrapper">
+    <div class="phone-screen">
+
+      <!-- Header -->
+      <header class="app-header">
+        <div class="app-title-box">
+          <div class="app-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+          <div class="app-title">Adab Islam</div>
+        </div>
+        <div class="header-btns">
+          <button class="icon-btn" id="btnSoundToggle" title="Bunyi ON/OFF"><i class="fa-solid fa-volume-high"></i></button>
+          <button class="icon-btn" id="btnOpenMenu" title="Menu Bab"><i class="fa-solid fa-bars-staggered"></i></button>
+        </div>
+      </header>
+
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <!-- Main Scrollable Area -->
+      <main class="content-area" id="mainContent">
+        <!-- Dynamic Content Injected Here -->
+      </main>
+
+      <!-- Bottom Navigation Footer -->
+      <footer class="app-footer">
+        <button class="nav-btn btn-prev" id="btnPrev"><i class="fa-solid fa-chevron-left"></i> Kembali</button>
+        <button class="nav-btn btn-quiz" id="btnStartQuiz"><i class="fa-solid fa-gamepad"></i> Kuiz Bab</button>
+        <button class="nav-btn btn-next" id="btnNext">Seterusnya <i class="fa-solid fa-chevron-right"></i></button>
+      </footer>
+
+      <!-- Chapter Menu Modal -->
+      <div class="modal-overlay" id="menuModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Senarai Bab Adab</h3>
+            <button class="icon-btn" id="btnCloseMenu"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="chapter-grid" id="chapterMenuList">
+            <!-- Chapter List Injected via JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       DATA COMPLETE NOTEBOOK & QUIZ (26 CHAPTERS - FULL DETAILS INCLUDED)
+       ========================================================================== */
+    const notesData = [
+      {
+        id: 1,
+        title: "Adab dengan Orang Dewasa & Orang Tua",
+        category: "Keluarga & Masyarakat",
+        pengertian: [
+          "<strong>Lebih Tua:</strong> Contohnya abang dan kakak.",
+          "<strong>Seusia Ibu Bapa:</strong> Contohnya pak cik dan mak cik.",
+          "<strong>Lebih Tua Daripada Ibu Bapa:</strong> Contohnya datuk dan nenek."
+        ],
+        golongan: [
+          "<strong>Dalam Masyarakat:</strong> Polis, Bomba, Jiran.",
+          "<strong>Dalam Keluarga:</strong> Ibu, Bapa, Nenek.",
+          "<strong>Dalam Sekolah:</strong> Guru, Kerani, Tukang Kebun."
+        ],
+        adab: [
+          "Memberi salam apabila bertemu.",
+          "Mengutamakan mereka dalam semua perkara.",
+          "Memanggil dengan nama dan gelaran yang baik.",
+          "Merendahkan suara ketika bercakap.",
+          "Berlemah lembut."
+        ],
+        faedah: ["Menjadi anak soleh.", "Hidup berkat.", "Disayangi manusia."],
+        akibat: ["Menjadi anak derhaka.", "Hidup tidak berkat.", "Dibenci masyarakat."],
+        doa: {
+          title: "Doa untuk Ibu Bapa",
+          arabic: "اللَّهُمَّ اغْفِرْ لِي ذُنُوْبِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيْرًا",
+          translation: "Ya Allah! Ampunilah dosaku dan dosa kedua orang tuaku dan kasihilah mereka sebagaimana mereka mengasihiku sejak kecil."
+        },
+        quiz: [
+          { q: "Siapakah yang dimaksudkan dengan orang yang seusia dengan ibu bapa kita?", opts: ["Abang & Kakak", "Pak Cik & Mak Cik", "Datuk & Nenek", "Adik-beradik"], ans: 1, exp: "Pak cik dan mak cik merupakan orang yang seusia dengan ibu bapa kita." },
+          { q: "Apakah adab bercakap dengan orang dewasa?", opts: ["Menjerit kuat", "Merendahkan suara", "Memotong cakap", "Berubah muka"], ans: 1, exp: "Merendahkan suara dan berlemah lembut adalah adab bercakap dengan orang dewasa." },
+          { q: "Berikut adalah faedah beradab dengan orang dewasa KECUALI:", opts: ["Disayangi manusia", "Hidup berkat", "Menjadi anak derhaka", "Menjadi anak soleh"], ans: 2, exp: "Menjadi anak derhaka adalah akibat TIDAK beradab." },
+          { q: "Apakah akibat tidak beradab dengan orang tua?", opts: ["Dibenci masyarakat", "Mendapat ganjaran", "Disukai rakan", "Hidup tenang"], ans: 0, exp: "Orang yang tidak beradab akan dibenci oleh masyarakat." },
+          { q: "Siapakah orang dewasa di persekitaran sekolah?", opts: ["Polis & Bomba", "Guru, Kerani & Tukang Kebun", "Ibu & Bapa", "Jiran sebelah"], ans: 1, exp: "Guru, kerani dan tukang kebun adalah orang dewasa di sekolah." },
+          { q: "Bagaimanakah kita memanggil orang yang lebih tua?", opts: ["Nama gelaran yang baik", "Nama gelaran buruk", "Panggilan sesuka hati", "Tanpa panggilan"], ans: 0, exp: "Kita wajib memanggil mereka dengan nama dan gelaran yang baik." },
+          { q: "Apakah maksud doa 'وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيْرًا'?", opts: ["Murahkanlah rezekiku", "Kasihilah mereka sebagaimana mengasihiku sejak kecil", "Berikanlah aku kejayaan", "Ampunilah guru-guruku"], ans: 1, exp: "Potongan doa tersebut memohon kasih sayang Allah untuk ibu bapa." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Adab dengan Jiran Islam & Bukan Islam",
+        category: "Kemasyarakatan",
+        pengertian: [
+          "<strong>Jiran Islam:</strong> Semua orang Islam yang tinggal berhampiran rumah dalam jarak 40 buah rumah.",
+          "<strong>Jiran Bukan Islam:</strong> Jiran yang menganut agama selain Islam."
+        ],
+        adab: ["Memberi salam.", "Sedia memberi bantuan.", "Bertolak ansur.", "Hormat-menghormati."],
+        hak: ["Tidak menyakiti jiran.", "Berbuat baik kepada jiran.", "Menghormati jiran."],
+        faedah: ["Hidup harmoni, aman dan damai.", "Wujud semangat kerjasama.", "Saling menjaga keselamatan diri dan harta."],
+        akibat: ["Selalu bermusuhan.", "Sukar mendapat pertolongan.", "Disisih masyarakat."],
+        hadis: {
+          title: "Hadis Berkaitan Jiran",
+          arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُحْسِنْ إِلَى جَارِهِ",
+          translation: "\"Sesiapa yang beriman kepada Allah dan hari akhirat, hendaklah berbuat baik kepada jirannya.\" (Riwayat Al-Bukhari)"
+        },
+        quiz: [
+          { q: "Berapakah jarak rumah yang dikira sebagai jiran?", opts: ["10 buah rumah", "20 buah rumah", "40 buah rumah", "50 buah rumah"], ans: 2, exp: "Islam menetapkan jiran merangkumi 40 buah rumah dari sekeliling rumah kita." },
+          { q: "Apakah adab utama terhadap jiran bukan Islam?", opts: ["Bermusuhan", "Hormat-menghormati", "Mengabaikan mereka", "Membuat bising"], ans: 1, exp: "Kita perlu sentiasa berbuat baik dan hormat-menghormati walaupun berlainan agama." },
+          { q: "Berikut adalah Hak Jiran yang perlu dipelihara KECUALI:", opts: ["Tidak menyakiti jiran", "Menghormati jiran", "Membiarkan jiran kesusahan", "Berbuat baik"], ans: 2, exp: "Membiarkan jiran dalam kesusahan menyalahi adab berjiran." },
+          { q: "Apakah faedah menjaga adab berjiran?", opts: ["Selalu bermusuhan", "Hidup harmoni, aman dan damai", "Disisih masyarakat", "Sukar dapat pertolongan"], ans: 1, exp: "Menjaga adab mewujudkan kehidupan yang harmoni dan selamat." },
+          { q: "Apakah yang diriwayatkan dalam hadis Al-Bukhari mengenai jiran?", opts: ["Hendaklah memulaukan jiran", "Hendaklah berbuat baik kepada jirannya", "Hendaklah meminta hadiah", "Jangan bertegur sapa"], ans: 1, exp: "Hadis menuntut orang beriman agar sentiasa berbuat baik kepada jiran." },
+          { q: "Jika rumah jiran ditimpa musibah, apakah tindakan kita?", opts: ["Ketawa", "Sedia memberi bantuan", "Tutup pintu", "Pindah rumah"], ans: 1, exp: "Sedia memberi bantuan adalah adab terpuji bersama jiran." },
+          { q: "Apakah akibat buruk jika kita sentiasa menyakiti jiran?", opts: ["Hidup tenang", "Disukai ramai", "Sukar mendapat pertolongan", "Mendapat pujian"], ans: 2, exp: "Menyakiti jiran menyebabkan kita disisih dan sukar mendapat bantuan." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Adab dengan Tetamu",
+        category: "Kemasyarakatan",
+        pengertian: ["<strong>Tetamu:</strong> Orang yang datang bertandang atau menziarahi ke rumah kita sama ada seorang atau ramai."],
+        adab: [
+          "<strong>Adab Tuan Rumah:</strong> Menghidangkan makanan & minuman sesuai, memberi layanan baik, bertanya khabar & bercakap perkara baik, menunjukkan rasa gembira.",
+          "<strong>Adab Sebagai Tetamu:</strong> Pilih masa yang sesuai, masuk rumah setelah dijemput, menjamah makanan/minuman dengan sopan, memberi salam semasa datang dan pulang."
+        ],
+        batas: ["Menjaga tutur kata dan tingkah laku.", "Menjaga pandangan mata.", "Menutup aurat."],
+        faedah: ["Dimurahkan rezeki.", "Diikuti dan dikasihi masyarakat.", "Mengeratkan silaturrahim."],
+        akibat: ["Kehidupan tidak tenang.", "Dipulau masyarakat.", "Sukar mendapat pertolongan.", "Dibenci keluarga dan rakan."],
+        hadis: {
+          title: "Hadis Memuliakan Tetamu",
+          arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُكْرِمْ ضَيْفَهُ",
+          translation: "\"Sesiapa yang beriman kepada Allah dan hari akhirat, hendaklah dia memuliakan tetamunya.\""
+        },
+        quiz: [
+          { q: "Apakah maksud tetamu?", opts: ["Orang yang menjual barang", "Orang yang datang bertandang ke rumah kita", "Jiran sebelah rumah sahaja", "Ahli keluarga serumah"], ans: 1, exp: "Tetamu ialah sesiapa yang datang menziarahi rumah kita." },
+          { q: "Apakah adab tuan rumah semasa menyambut tetamu?", opts: ["Bermasam muka", "Menunjukkan rasa gembira", "Mengunci pintu", "Membiarkan tetamu di luar"], ans: 1, exp: "Tuan rumah hendaklah gembira dan mesra menyambut tetamu." },
+          { q: "Bilakah waktu yang sesuai untuk kita bertandang sebagai tetamu?", opts: ["Tengah malam", "Waktu rehat/tidur", "Waktu yang sesuai & dijemput", "Waktu subuh"], ans: 2, exp: "Tetamu perlu memilih waktu yang sesuai dan tidak mengganggu tuan rumah." },
+          { q: "Berikut adalah batas pergaulan bersama tetamu KECUALI:", opts: ["Menutup aurat", "Menjaga pandangan", "Bercakap kasar", "Menjaga tutur kata"], ans: 2, exp: "Bercakap kasar dilarang sama sekali dalam batas pergaulan." },
+          { q: "Apakah faedah memuliakan tetamu mengikut ajaran Islam?", opts: ["Dimurahkan rezeki", "Rezeki berkurangan", "Dipulau jiran", "Membazir harta"], ans: 0, exp: "Memuliakan tetamu menjadi pintu kurniaan rezeki yang berkat." },
+          { q: "Apakah tuntutan hadis berkaitan tetamu?", opts: ["Menghina tetamu", "Memuliakan tetamu", "Meminta bayaran", "Mengabaikan tetamu"], ans: 1, exp: "Rasulullah SAW menyuruh orang beriman untuk memuliakan tetamu." },
+          { q: "Apakah akibat jika seseorang tidak mesra melayan tetamu?", opts: ["Mengeratkan silaturrahim", "Kehidupan tidak tenang & dibenci", "Mendapat ganjaran pahala", "Disukai rakan"], ans: 1, exp: "Sikap buruk terhadap tetamu membawa kepada kebencian dan jiwa tidak tenang." }
+        ]
+      },
+      {
+        id: 4,
+        title: "Adab dengan Orang Kelainan Upaya (O.K.U)",
+        category: "Nilai Murni",
+        pengertian: ["<strong>O.K.U:</strong> Keadaan yang dianggap mengurangkan fungsi seseorang jika dibandingkan dengan ukuran biasa masyarakat."],
+        kategori: ["Kurang upaya akal", "Kurang upaya pendengaran", "Kurang upaya penglihatan", "Kurang upaya anggota"],
+        adab: [
+          "Jangan guna kemudahan khas yang disediakan untuk mereka.",
+          "Jangan panggil dengan sesuatu yang hina dan keji.",
+          "Jangan pentingkan diri.",
+          "Segera hulurkan bantuan jika perlu."
+        ],
+        faedah: ["Dikasihi Allah.", "Masyarakat hidup harmoni.", "Merapatkan ukhwah.", "Dipuji masyarakat."],
+        akibat: ["Dimurkai Allah.", "Hidup tidak tenang.", "Sukar mendapat pertolongan.", "Dibenci keluarga dan rakan."],
+        quiz: [
+          { q: "Manakah KECUALI daripada kategori kurang upaya?", opts: ["Kurang upaya akal", "Kurang upaya pendengaran", "Kurang upaya harta", "Kurang upaya anggota"], ans: 2, exp: "Kurang upaya harta bukan kategori OKU." },
+          { q: "Apakah adab kita terhadap kemudahan khas OKU (cth: tandas/parkir OKU)?", opts: ["Menggunakannya sesuka hati", "Jangan menggunakannya jika sempurna", "Merosakkannya", "Menjualnya"], ans: 1, exp: "Kemudahan OKU tidak boleh disalahguna oleh orang yang sihat." },
+          { q: "Apakah tindakan betul jika melihat golongan OKU memerlukan bantuan?", opts: ["Membiarkan mereka", "Ketawa", "Segera hulurkan bantuan", "Mengambil gambar"], ans: 2, exp: "Kita wajib membantu OKU yang berada dalam kesulitan." },
+          { q: "Apakah akibat menghina atau memanggil OKU dengan gelaran keji?", opts: ["Dikasihi Allah", "Dimurkai Allah & hidup tidak tenang", "Mendapat kawan baharu", "Mendapat pahala"], ans: 1, exp: "Menghina fizikal atau keadaan OKU adalah perbuatan berdosa yang dimurkai Allah." },
+          { q: "Berikut adalah faedah beradab dengan OKU KECUALI:", opts: ["Dikasihi Allah", "Merapatkan ukhwah", "Dibenci keluarga", "Masyarakat harmoni"], ans: 2, exp: "Dibenci keluarga adalah akibat buruk, bukannya faedah." },
+          { q: "Manakah contoh OKU pendengaran?", opts: ["Tidak boleh berjalan", "Tidak boleh mendengar dengan jelas", "Tidak boleh melihat", "Hilang ingatan"], ans: 1, exp: "Kurang upaya pendengaran melibatkan masalah deria pendengaran." },
+          { q: "Apakah sikap yang perlu dielakkan terhadap golongan OKU?", opts: ["Bertolak ansur", "Pentingkan diri", "Prihatin", "Bantu-membantu"], ans: 1, exp: "Sikap pentingkan diri sendiri perlu dihindari." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Adab dengan Al-Quran, Kitab & Buku",
+        category: "Ilmu & Ibadah",
+        pengertian: [
+          "<strong>Al-Quran:</strong> Kalam Allah yang diturunkan kepada Nabi Muhammad SAW melalui Malaikat Jibril.",
+          "<strong>Kitab:</strong> Diwahyukan kepada para nabi dan rasul sebagai panduan hidup.",
+          "<strong>Buku:</strong> Himpunan kertas yang dijilidkan mengandungi tulisan & gambar sebagai sumber ilmu."
+        ],
+        adab: [
+          "Berwuduk sebelum memegang dan membaca Al-Quran.",
+          "Al-Quran disusun dan diletakkan di tempat yang tinggi/sesuai.",
+          "Duduk dengan sopan dan menghadap kiblat."
+        ],
+        faedah: ["Mendapat pahala.", "Hidup berkat, tenang dan tenteram.", "Mendapat syafaat Al-Quran di akhirat."],
+        akibat: ["Mendapat dosa.", "Hidup tidak tenteram.", "Dimurkai Allah."],
+        quiz: [
+          { q: "Melalui perantaraan siapakah Al-Quran diturunkan?", opts: ["Malaikat Mikail", "Malaikat Jibril", "Malaikat Israfil", "Malaikat Izrail"], ans: 1, exp: "Al-Quran diwahyukan melalui Malaikat Jibril a.s." },
+          { q: "Apakah syarat penting sebelum memegang Al-Quran?", opts: ["Berpakaian sukan", "Mandi bunga", "Berwuduk", "Makan kenyang"], ans: 2, exp: "Wajib/sunat berwuduk sebelum menyentuh dan membaca Al-Quran." },
+          { q: "Di manakah Al-Quran sepatutnya diletakkan?", opts: ["Di atas lantai", "Di tempat yang sesuai dan tinggi", "Di bawah katil", "Di dalam seluar"], ans: 1, exp: "Al-Quran mesti dimuliakan di tempat yang tinggi dan bersih." },
+          { q: "Apakah faedah membaca dan mengamalkan Al-Quran di akhirat?", opts: ["Mendapat kekayaan", "Mendapat syafaat Al-Quran", "Dipuji kawan", "Hilang ingatan"], ans: 1, exp: "Al-Quran akan memberi syafaat kepada pembacanya di akhirat kelak." },
+          { q: "Apakah maksud Buku?", opts: ["Kalam Allah", "Himpunan kertas bernaskah sumber ilmu", "Wahyu rasul", "Kertas kosong"], ans: 1, exp: "Buku ialah himpunan kertas dijilid yang menjadi sumber ilmu pengetahuan." },
+          { q: "Manakah adab duduk semasa membaca Al-Quran?", opts: ["Baring terlentang", "Duduk sopan menghadap kiblat", "Duduk bersilang kaki atas meja", "Tidur"], ans: 1, exp: "Duduk sopan dan menghadap kiblat adalah adab tilawah Al-Quran." },
+          { q: "Apakah akibat orang yang membiarkan Al-Quran berhabuk dan terpijak?", opts: ["Hidup tenteram", "Mendapat dosa & dimurkai Allah", "Mendapat pahala", "Diikuti masyarakat"], ans: 1, exp: "Mengaibkan atau tidak menghormati Al-Quran mendatangkan dosa besar." }
+        ]
+      },
+      {
+        id: 6,
+        title: "Adab dengan Guru",
+        category: "Pendidikan",
+        pengertian: ["<strong>Guru:</strong> Insan mulia yang mengajar dan mendidik kita tanpa mengira masa dan tenaga."],
+        adab: [
+          "Menghormati guru.",
+          "Jangan berbisik di hadapan guru.",
+          "Tidak meninggikan suara terhadap guru.",
+          "Memberi perhatian ketika guru mengajar.",
+          "Dengar nasihat dan tunjuk ajar guru."
+        ],
+        akibat: [
+          "Mendapat dosa.",
+          "Ilmu tidak bertambah.",
+          "Tidak mendapat keberkatan.",
+          "Hidup tidak akan berjaya."
+        ],
+        quiz: [
+          { q: "Siapakah guru?", opts: ["Rakan sebaya", "Insan mulia yang mengajar dan mendidik kita", "Orang asing", "Murid sekolah"], ans: 1, exp: "Guru ialah mendidik yang membimbing kita dengan ilmu." },
+          { q: "Apakah perbuatan yang dilarang semasa guru sedang mengajar?", opts: ["Memberi tumpuan", "Mencatat nota", "Berbisik-bisik di hadapan guru", "Duduk sopan"], ans: 2, exp: "Berbisik-bisik menunjukkan sikap tidak menghormati guru." },
+          { q: "Bagaimanakah intonasi suara yang betul apabila bercakap dengan guru?", opts: ["Menjerit", "Meninggikan suara", "Perlahan & bersopan tanpa meninggi suara", "Kasar"], ans: 2, exp: "Kita dilarang meninggikan suara di hadapan guru." },
+          { q: "Apakah akibat tidak menghormati guru?", opts: ["Ilmu berkat", "Ilmu tidak bertambah & tidak berkat", "Mudah faham", "Mendapat anugerah"], ans: 1, exp: "Ketiadaan adab menyebabkan ilmu hilang keberkatan." },
+          { q: "Apabila guru memberi nasihat, kita hendaklah:", opts: ["Mendengar & mengamalkannya", "Pura-pura pekak", "Ejek guru", "Marah"], ans: 0, exp: "Nasihat guru bertujuan membimbing kebaikan murid." },
+          { q: "Mengapakah kita perlu memberi perhatian semasa guru mengajar?", opts: ["Supaya boleh tidur", "Supaya mudah memahami pelajaran", "Untuk menunjuk-nunjuk", "Sebab dipaksa"], ans: 1, exp: "Fokus adalah kunci kejayaan memahami ilmu." },
+          { q: "Perbuatan manakah yang mendatangkan keberkatan ilmu?", opts: ["Melawan kata guru", "Menghormati dan mendoakan guru", "Lari dari kelas", "Menyorok buku guru"], ans: 1, exp: "Menghormati guru menjadi punca keberkatan ilmu dunia & akhirat." }
+        ]
+      },
+      {
+        id: 7,
+        title: "Adab Belajar",
+        category: "Pendidikan",
+        dihindari: ["Tidur semasa belajar", "Bermain", "Bersembang", "Tidak memberi tumpuan ketika guru mengajar", "Mengganggu rakan lain"],
+        faedah: ["Ilmu diberkati Allah.", "Membentuk peribadi dan akhlak yang mulia.", "Memperoleh kejayaan di dunia dan akhirat.", "Mudah ingat dan faham pengajaran guru."],
+        akibat: ["Bosan dan mudah putus asa.", "Tidak dapat menjawab soalan guru.", "Tidak disukai rakan.", "Tidak memahami pelajaran."],
+        doa: {
+          title: "Doa Sebelum Belajar",
+          arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
+          translation: "\"Ya Allah! Aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik dan amalan yang diterima.\""
+        },
+        quiz: [
+          { q: "Perkara manakah yang WAJIB dihindari semasa belajar?", opts: ["Mencatat nota", "Tidur & bersembang", "Membaca buku", "Bertanya soalan"], ans: 1, exp: "Tidur dan bersembang merosakkan tumpuan belajar." },
+          { q: "Apakah faedah beradab semasa belajar?", opts: ["Mudah ingat dan faham pengajaran", "Bosan dan malas", "Gagal peperiksaan", "Dimurkai guru"], ans: 0, exp: "Adab yang baik mempermudahkan kefahaman ilmu." },
+          { q: "Apakah akibat murid yang sering bermain dalam kelas?", opts: ["Mendapat markah penuh", "Tidak memahami pelajaran", "Disukai guru", "Ilmu bertambah"], ans: 1, exp: "Bermain menyebabkan hilang fokus dan tidak faham ilmu." },
+          { q: "Dalam doa belajar, apakah 3 perkara yang dipohon?", opts: ["Harta, Kereta, Rumah", "Ilmu bermanfaat, rezeki baik, amalan diterima", "Kesihatan, Makanan, Mainan", "Pangkat, Sijil, Hadiah"], ans: 1, exp: "Doa memohon ilmu bermanfaat, rezeki baik dan amalan diterima." },
+          { q: "Bagaimanakah perasaan murid yang tidak beradab ketika belajar?", opts: ["Seronok sepanjang masa", "Bosan dan mudah putus asa", "Tenang dan gembira", "Sangat pandai"], ans: 1, exp: "Tanpa adab, pembelajaran menjadi hambar dan cepat putus asa." },
+          { q: "Mengganggu rakan semasa ujian/pembelajaran tergolong dalam:", opts: ["Adab terpuji", "Perkara yang perlu dihindari", "Sunat", "Faedah belajar"], ans: 1, exp: "Mengganggu rakan adalah perkara terlarang semasa belajar." },
+          { q: "Apakah maksud 'عِلْمًا نَافِعًا'?", opts: ["Rezeki berlimpah", "Ilmu yang bermanfaat", "Amalan mulia", "Kesihatan tubuh"], ans: 1, exp: "'Ilman naafi'an' bermaksud ilmu yang memberikan manfaat." }
+        ]
+      },
+      {
+        id: 8,
+        title: "Kebersihan & Peraturan Sekolah",
+        category: "Sekolah",
+        pengertian: [
+          "<strong>Sekolah:</strong> Satu tempat yang digunakan untuk belajar dan mengajar.",
+          "<strong>Hadis Kebersihan:</strong> 'الظَّهُورُ شَطْرُ الْإِيمَانِ' (Kebersihan itu sebahagian daripada iman - HR Muslim)."
+        ],
+        adab: ["Sentiasa mematuhi peraturan sekolah.", "Menjaga kebersihan sekolah dan kelas.", "Menghormati warga sekolah.", "Menghargai harta benda sekolah."],
+        kepentinganKebersihan: ["Menjaga nama baik sekolah.", "Mewujudkan suasana pembelajaran yang selesa.", "Menimbulkan minat untuk hadir ke sekolah.", "Membentuk disiplin murid."],
+        akibatKotor: ["Nama baik sekolah tercemar.", "Sekolah menjadi kotor.", "Kemudahan tidak dapat digunakan sepenuhnya.", "Murid tidak minat hadir ke sekolah."],
+        kepentinganPeraturan: ["Melahirkan murid yang berdisiplin.", "Mengelakkan gejala ponteng.", "Mewujudkan suasana harmoni di sekolah.", "Disayangi guru dan rakan."],
+        akibatLanggarPeraturan: ["Berlaku gejala buli.", "Menyebabkan kerosakan harta benda sekolah.", "Masalah ponteng dan salah laku.", "Tidak disukai guru dan rakan."],
+        quiz: [
+          { q: "Apakah maksud sekolah?", opts: ["Tempat membeli-belah", "Tempat belajar dan mengajar", "Tempat riadah malam", "Tempat simpan barang"], ans: 1, exp: "Sekolah ialah institusi untuk menyampaikan dan menuntut ilmu." },
+          { q: "Potongan hadis 'الظَّهُورُ شَطْرُ الْإِيمَانِ' bermaksud:", opts: ["Masa itu emas", "Kebersihan itu sebahagian daripada iman", "Menuntut ilmu itu wajib", "Guru itu pelita"], ans: 1, exp: "Hadis Riwayat Muslim menegaskan kebersihan sebahagian daripada iman." },
+          { q: "Apakah kepentingan utama mematuhi peraturan sekolah?", opts: ["Melahirkan murid yang berdisiplin", "Boleh ponteng kelas", "Boleh merosakkan kerusi", "Dipulau rakan"], ans: 0, exp: "Peraturan sekolah mendidik disiplin diri murid." },
+          { q: "Apakah akibat jika kawasan kelas kotor dan bersepah?", opts: ["Suasana jadi selesa", "Murid tidak minat hadir ke sekolah", "Sekolah dipuji", "Mendapat hadiah"], ans: 1, exp: "Persekitaran kotor merosakkan mood dan keselesaan belajar." },
+          { q: "Manakah tindakan menghargai harta benda sekolah?", opts: ["Menconteng meja", "Memecahkan cermin", "Menggunakan kerusi meja dengan cermat", "Membuang sampah dalam tandas"], ans: 2, exp: "Menggunakan peralatan sekolah dengan baik adalah bukti menghargai harta awam sekolah." },
+          { q: "Berikut adalah kesan melanggar peraturan sekolah KECUALI:", opts: ["Berlaku gejala buli", "Kerosakan harta benda", "Mewujudkan suasana harmoni", "Masalah ponteng"], ans: 2, exp: "Mewujudkan suasana harmoni adalah kesan mematuhi peraturan." },
+          { q: "Siapakah yang perlu dihormati di sekolah?", opts: ["Guru sahaja", "Rakan sahaja", "Keseluruhan warga sekolah", "Tukang kebun sahaja"], ans: 2, exp: "Semua warga sekolah (guru, pentadbir, staf, pekerja & rakan) wajib dihormati." }
+        ]
+      },
+      {
+        id: 9,
+        title: "Adab Menziarahi Rakan Sebaya",
+        category: "Adab Ziarah",
+        pengertian: ["<strong>Ziarah:</strong> Lawatan atau kunjungan ke suatu tempat."],
+        adab: ["Memberi salam & meminta izin sebelum masuk.", "Duduk dengan sopan.", "Merendahkan suara ketika bercakap.", "Menjaga tingkah laku."],
+        larangan: ["Tidak menghormati ahli keluarga rakan.", "Ziarah pada waktu yang tidak sesuai.", "Membuat bising.", "Bercakap dengan kasar."],
+        kelebihan: ["Membentuk sikap tolong-menolong & kerjasama.", "Mengeratkan silaturrahim.", "Dapat mengetahui khabar berita rakan.", "Bersama-sama melakukan perkara baik."],
+        akibat: ["Kehadiran kita tidak disenangi.", "Memutuskan silaturrahim.", "Dibenci rakan dan ahli keluarganya.", "Mengguris hati rakan dan ahli keluarganya."],
+        quiz: [
+          { q: "Apakah langkah pertama sebelum memasuki rumah rakan?", opts: ["Terus melangkah masuk", "Memberi salam & meminta izin", "Membuka peti ais", "Tidur di sofa"], ans: 1, exp: "Wajib memberi salam dan mendapat kebenaran tuan rumah dahulu." },
+          { q: "Bilakah waktu LARANGAN menziarahi rakan?", opts: ["Waktu siang yang sesuai", "Waktu malam lewat/istirahat", "Hujung minggu selepas janji", "Petang"], ans: 1, exp: "Dilarang ziarah pada waktu tidak sesuai seperti waktu tidur malam." },
+          { q: "Apakah kelebihan menziarahi rakan sebaya?", opts: ["Memutuskan silaturrahim", "Mengeratkan silaturrahim & bekerjasama", "Menimbulkan pergaduhan", "Membuat bising"], ans: 1, exp: "Ziarah mengeratkan ukhwah dan persahabatan." },
+          { q: "Bagaimanakah nada suara ketika bercakap di rumah rakan?", opts: ["Merendahkan suara", "Menjerit-jerit", "Menggunakan pembesar suara", "Kasar"], ans: 0, exp: "Merendahkan suara adalah adab kesopanan di rumah orang." },
+          { q: "Berikut adalah larangan semasa di rumah rakan KECUALI:", opts: ["Membuat bising", "Bercakap kasar", "Duduk dengan sopan", "Menghina keluarga rakan"], ans: 2, exp: "Duduk dengan sopan ialah adab terpuji." },
+          { q: "Apakah akibat jika kita tidak menjaga kelakuan di rumah rakan?", opts: ["Disayangi ibu rakan", "Kehadiran tidak disenangi", "Mendapat ganjaran", "Rumah jadi bersih"], ans: 1, exp: "Kelakuan buruk membuatkan tuan rumah rasa terganggu." },
+          { q: "Apakah maksud Ziarah?", opts: ["Membeli barang", "Lawatan atau kunjungan ke suatu tempat", "Bermain permaian digital", "Melintas jalan"], ans: 1, exp: "Ziarah bermaksud melawat atau berkunjung." }
+        ]
+      },
+      {
+        id: 10,
+        title: "Adab Menziarahi Orang Dewasa",
+        category: "Adab Ziarah",
+        adab: ["Memberi salam apabila berjumpa.", "Membawa buah tangan.", "Menggunakan bahasa yang sopan.", "Memanggil orang dewasa dengan panggilan hormat."],
+        larangan: ["Bermasam muka.", "Bercakap dengan tidak sopan.", "Menyampuk perbualan.", "Melakukan perbuatan yang mengguris hati."],
+        kelebihan: ["Mengeratkan silaturrahim.", "Orang dewasa rasa dihargai dan dihormati.", "Disayangi oleh orang dewasa.", "Mudah terima bantuan."],
+        akibat: ["Memutuskan silaturrahim.", "Memalukan diri di khalayak ramai.", "Dimarahi ibu bapa.", "Mengguris perasaan orang dewasa yang diziarahi."],
+        panggilanHormat: ["Kakak", "Abang", "Tuan", "Encik", "Cik", "Nenek", "Datuk", "Pak Cik"],
+        quiz: [
+          { q: "Manakah contoh panggilan hormat untuk orang dewasa?", opts: ["Nama gelaran buruk", "Pak Cik, Encik, Tuan", "Wei", "Hey"], ans: 1, exp: "Gunakan kata sapaan hormat seperti Pak Cik, Encik atau Tuan." },
+          { q: "Apakah amalan sunnah yang elok dibawa semasa menziarahi orang dewasa?", opts: ["Sampah", "Buah tangan", "Kesusahan", "Senjata"], ans: 1, exp: "Membawa buah tangan menggembirakan hati tuan rumah." },
+          { q: "Apakah perlakuan terlarang semasa orang dewasa sedang berbual?", opts: ["Menjadi pendengar", "Menyampuk perbualan", "Duduk senyap", "Bercakap sopan"], ans: 1, exp: "Menyampuk perbualan dianggap biadap dan tidak beradab." },
+          { q: "Berikut adalah kelebihan beradab dengan orang dewasa KECUALI:", opts: ["Disayangi orang dewasa", "Orang dewasa rasa dihargai", "Memalukan diri sendiri", "Mengeratkan silaturrahim"], ans: 2, exp: "Memalukan diri adalah akibat perbuatan TIDAK beradab." },
+          { q: "Apabila bertemu orang dewasa, perkara pertama ialah:", opts: ["Lari", "Memberi salam", "Minta wang", "Bermasam muka"], ans: 1, exp: "Memberi salam memulakan ukhwah dengan doa sejahtera." },
+          { q: "Apakah akibat jika anak muda bertegur sapa secara kasar?", opts: ["Dipuji ramai", "Dimarahi ibu bapa & mengguris hati", "Diberi hadiah", "Mendapat ganjaran"], ans: 1, exp: "Kasar tutur kata menimbulkan kemarahan dan rasa tersinggung." },
+          { q: "Siapakah yang tergolong dalam panggilan 'Nenek/Datuk'?", opts: ["Rakan sekelas", "Orang yang lebih tua daripada ibu bapa kita", "Adik bayi", "Abang kandung"], ans: 1, exp: "Nenek dan datuk ialah generasi yang lebih tua daripada ibu bapa." }
+        ]
+      },
+      {
+        id: 11,
+        title: "Adab Menziarahi Saudara Mara",
+        category: "Adab Ziarah",
+        adab: ["Menziarahi pada waktu yang sesuai.", "Menjaga sikap semasa berziarah.", "Beramah mesra.", "Mengucap salam & berjabat tangan dengan saudara mara mahram."],
+        larangan: ["Menyinggung perasaan saudara mara.", "Bermasam muka.", "Mengaibkan saudara di hadapan yang lain.", "Tidak berterima kasih."],
+        kelebihan: ["Mengeratkan silaturrahim.", "Mengeratkan kasih sayang.", "Mudah terima bantuan saudara mara.", "Dihormati dan disayangi saudara mara."],
+        akibat: ["Kehadiran kita kurang disenangi.", "Menimbulkan pergaduhan.", "Hilang semangat kerjasama.", "Hubungan saudara mara porak-peranda."],
+        mahram: ["Anak Kandung", "Datuk & Nenek", "Adik-Beradik Kandung", "Adik-Beradik Ibu atau Bapa", "Ibu Bapa", "Ibu Susuan & Suaminya", "Adik-Beradik Susuan"],
+        quiz: [
+          { q: "Siapakah antara berikut yang tergolong sebagai MAHRAM?", opts: ["Jiran sebelah", "Adik-beradik kandung & Ibu Bapa", "Rakan sekelas", "Penjual kedai"], ans: 1, exp: "Adik-beradik kandung dan ibu bapa adalah mahram." },
+          { q: "Bolehkah kita berjabat tangan dengan saudara mara yang MAHRAM?", opts: ["Boleh dan dituntut", "Haram", "Dilarang sama sekali", "Batal wuduk sahaja"], ans: 0, exp: "Bersalaman dengan mahram menderaskan kasih sayang." },
+          { q: "Apakah perlakuan amat dilarang semasa di rumah saudara mara?", opts: ["Beramah mesra", "Mengaibkan saudara di depan orang lain", "Membawa buah tangan", "Ucap terima kasih"], ans: 1, exp: "Mengaibkan saudara merosakkan pertalian keluarga." },
+          { q: "Apakah kesan mengamalkan silaturrahim dengan saudara mara?", opts: ["Hubungan porak-peranda", "Mudah mendapat bantuan & dikasihi", "Menimbulkan pergaduhan", "Benci-membenci"], ans: 1, exp: "Silaturrahim membuka pintu rezeki dan bantuan ketiadaan susah." },
+          { q: "Manakah BUKAN dalam senarai Mahram?", opts: ["Anak Kandung", "Ibu Susuan", "Orang Asing / Rakan", "Adik-Beradik Ibu/Bapa"], ans: 2, exp: "Orang asing bukannya mahram kita." },
+          { q: "Apakah akibat jika sering bermasam muka dan berbalah dengan saudara mara?", opts: ["Disayangi", "Hubungan kekeluargaan porak-peranda", "Mendapat pahala", "Hidup bahagia"], ans: 1, exp: "Sikap buruk meruntuhkan keharmonian keluarga." },
+          { q: "Apakah adab semasa menerima layanan makanan dari saudara mara?", opts: ["Mengkritik makanan", "Mengcap terima kasih & menjamah sopan", "Membuang makanan", "Minta bayaran"], ans: 1, exp: "Sentiasa berterima kasih atas layanan saudara." }
+        ]
+      },
+      {
+        id: 12,
+        title: "Adab Menziarahi Orang Sakit",
+        category: "Adab Ziarah",
+        adab: ["Pilih masa yang sesuai.", "Mendoakan pesakit.", "Membawa buah tangan.", "Membantu keperluan pesakit dan keluarganya."],
+        larangan: ["Menziarahi pada masa yang tidak sesuai.", "Membuat bising.", "Berkelakuan tidak sopan.", "Ziarah pesakit terlalu lama."],
+        kelebihan: ["Mensyukuri nikmat sihat.", "Menggembirakan hati pesakit.", "Mengeratkan silaturrahim.", "Memupuk sifat saling tolong-menolong."],
+        akibat: ["Nikmat sihat tidak disyukuri.", "Pesakit merasa tidak dihargai & dihormati.", "Mengguris perasaan pesakit.", "Pesakit tidak selesa."],
+        hospital: {
+          adab: ["Mengikut masa yang ditetapkan.", "Mematuhi peraturan.", "Berbual dengan suara yang perlahan."],
+          larangan: ["Melakukan perbuatan mengganggu pesakit lain.", "Membawa buah tangan tidak sesuai.", "Menghalang kakitangan bertugas."]
+        },
+        buahTanganXsesuai: ["Air bergas", "Makanan ringan", "Makanan segera", "Makanan terlalu pedas", "Makanan berbau kuat"],
+        quiz: [
+          { q: "Mengapakah kita tidak boleh menziarahi pesakit terlalu lama?", opts: ["Supaya pesakit dapat berehat", "Kerana pesakit bosan", "Kerana tiada makanan", "Supaya boleh main game"], ans: 0, exp: "Pesakit memerlukan masa rehat yang secukupnya untuk sembuh." },
+          { q: "Manakah buah tangan yang TIDAK SESUAI diberikan kepada pesakit?", opts: ["Buah-buahan segar", "Air bergas & makanan pedas", "Bunga", "Buku doa"], ans: 1, exp: "Air bergas dan makanan pedas boleh mengganggu kesihatan pesakit." },
+          { q: "Apakah adab suara ketika menziarahi pesakit di wad hospital?", opts: ["Menjerit", "Berbual dengan suara perlahan", "Pasang radio kuat", "Menyanyi"], ans: 1, exp: "Suara perlahan menjaga keselesaan pesakit lain di wad." },
+          { q: "Apakah kelebihan utama kita menziarahi orang sakit?", opts: ["Dapat makanan percuma", "Mensyukuri nikmat sihat & insaf", "Boleh main di hospital", "Dapat sijil"], ans: 1, exp: "Melihat orang sakit membuatkan kita bersyukur atas kesihatan." },
+          { q: "Apakah perbuatan terlarang di hospital?", opts: ["Mematuhi waktu melawat", "Menghalang laluan doktor/jururawat", "Mendoakan pesakit", "Bercakap lembut"], ans: 1, exp: "Dilarang menghalang tugas kakitangan perubatan." },
+          { q: "Apakah contoh makanan yang berbau kuat yang patut dielakkan di hospital?", opts: ["Epal", "Durian", "Roti", "Biskut"], ans: 1, exp: "Makanan berbau kuat seperti durian mengganggu keselesaan wad." },
+          { q: "Apakah ucapan/tindakan terbaik untuk pesakit?", opts: ["Ejek sakitnya", "Mendoakan kesembuhan pesakit", "Cerita hal menakutkan", "Minta harta"], ans: 1, exp: "Mendoakan kesembuhan adalah sunnah menziarahi pesakit." }
+        ]
+      },
+      {
+        id: 13,
+        title: "Adab Menziarahi Kematian",
+        category: "Adab Ziarah",
+        adab: ["Mengucapkan takziah kepada ahli keluarga si mati.", "Menghormati kesedihan keluarga si mati.", "Mendoakan jenazah."],
+        larangan: ["Meratapi kematian (menjerit/meraung).", "Berbual kosong.", "Memalukan ahli keluarga si mati."],
+        kelebihan: ["Tanda penghormatan terakhir kepada jenazah.", "Menimbulkan rasa insaf."],
+        akibat: ["Mengaibkan jenazah.", "Dibenci keluarga si mati."],
+        doa: {
+          musibah: { ar: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", tr: "Sesungguhnya daripada Allah kami datang dan kepada-Nya jualah kami dikembalikan." },
+          lelaki: { ar: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ", tr: "Ya Allah, ampunilah dia, rahmatilah dia, sejahterakan dan maafkanlah dia." },
+          perempuan: { ar: "اللَّهُمَّ اغْفِرْ لَهَا وَارْحَمْهَا وَعَافِهَا وَاعْفُ عَنْهَا", tr: "Ya Allah, ampunilah dia, rahmatilah dia, sejahterakan dan maafkanlah dia." }
+        },
+        quiz: [
+          { q: "Apakah ucapan sunnah apabila mendengar berita kematian?", opts: ["Alhamdulillah", "Inna lillahi wa inna ilaihi raji'un", "Subhanallah", "Astaghfirullah"], ans: 1, exp: "Lafaz istirja' dibaca apabila ditimpa musibah atau berita kematian." },
+          { q: "Apakah perbuatan TERLARANG semasa menziarahi kematian?", opts: ["Mendoakan jenazah", "Mengcap takziah", "Meratapi & meraung kesedihan", "Duduk senyap"], ans: 2, exp: "Meratapi (nizhah) dengan menjerit meraung adalah dilarang dalam Islam." },
+          { q: "Apakah doa jenazah untuk lelaki pada kalimat 'ampunilah dia'?", opts: ["اغْفِرْ لَهَا", "اغْفِرْ لَهُ", "اغْفِرْ لَنَا", "اغْفِرْ لَهُمْ"], ans: 1, exp: "'Lahu' merujuk kepada kata ganti nama lelaki (dia lelaki)." },
+          { q: "Apakah tujuan kita mengucapkan takziah kepada keluarga si mati?", opts: ["Menenangkan & meringankan kesedihan", "Pentingkan diri", "Minta makanan", "Berbual kosong"], ans: 0, exp: "Takziah bertujuan memberi sokongan moral dan ketenangan." },
+          { q: "Apakah kelebihan menziarahi majlis kematian?", opts: ["Menimbulkan rasa insaf terhadap mati", "Boleh bergelak tawa", "Mendapat ganjaran wang", "Menunjuk pakaian"], ans: 0, exp: "Melihat kematian melembutkan hati dan menimbulkan keinsafan." },
+          { q: "Apakah doa jenazah bagi PEREMPUAN?", opts: ["اللَّهُمَّ اغْفِرْ لَهُ", "اللَّهُمَّ اغْفِرْ لَهَا", "اللَّهُمَّ اغْفِرْ لِي", "اللَّهُمَّ اغْفِرْ لَهُمْ"], ans: 1, exp: "'Laha' digunakan khusus untuk jenazah wanita." },
+          { q: "Mengapakah dilarang berbual kosong & bergelak tawa di rumah si mati?", opts: ["Menjaga sensitiviti & kesedihan keluarga", "Kerana tiada tempat", "Kerana polis ada", "Sebab malam"], ans: 0, exp: "Sikap ketawa tidak menghormati kesedihan keluarga yang kehilangan." }
+        ]
+      },
+      {
+        id: 14,
+        title: "Adab Menziarahi Kubur",
+        category: "Adab Ziarah",
+        adab: ["Memberi salam ketika memasuki kawasan perkuburan.", "Mendoakan keampunan kepada ahli kubur.", "Menjaga kebersihan tanah perkuburan.", "Membantu sekiranya perlu."],
+        larangan: ["Melangkah kubur.", "Duduk di atas kubur.", "Meratap kerana terlalu sedih.", "Ria dan bergelak ketawa di kawasan kubur."],
+        kelebihan: ["Memberi keinsafan dalam kehidupan.", "Mengambil iktibar melihat kematian.", "Menimbulkan rasa cintakan akhirat."],
+        akibat: ["Menambah kesedihan keluarga si mati.", "Tiada rasa keinsafan.", "Tidak beramal untuk bekalan akhirat."],
+        salam: {
+          arabic: "السَّلاَمُ عَلَيْكُمْ يَا أَهْلَ الْقُبُورِ ، يَغْفِرُ اللَّهُ لَنَا وَلَكُمْ ، أَنْتُمْ سَلَفُنَا ، وَنَحْنُ بِالأَثَرِ",
+          translation: "\"Salam sejahtera wahai penghuni kubur, semoga Allah mengampuni kami dan kamu semua, kamu telah mendahului kami dan kami akan menyusul.\" (Sunan Tarmizi)"
+        },
+        quiz: [
+          { q: "Apakah perkara pertama dilakukan apabila memasuki kawasan kubur?", opts: ["Terus berlari", "Memberi salam kepada ahli kubur", "Membeli ais krim", "Duduk atas rumput"], ans: 1, exp: "Sunnah memberi salam khas 'Assalamu'alaikum ya ahlal qubur'." },
+          { q: "Apakah perbuatan HARAM/LARANGAN di atas kubur?", opts: ["Mendoakan ahli kubur", "Duduk atau melangkah di atas binaan kubur", "Mencabut rumput liar", "Siram air"], ans: 1, exp: "Dilarang memijak, melangkah atau duduk di atas kubur." },
+          { q: "Apakah kelebihan utama mengamalkan ziarah kubur?", opts: ["Dapat bersiar-siar", "Menimbulkan rasa keinsafan & ingat akhirat", "Boleh bergelak tawa", "Mencari harta"], ans: 1, exp: "Ziarah kubur mengingatkan manusia tentang hari akhirat." },
+          { q: "Bagaimanakah suasana yang sepatutnya di perkuburan?", opts: ["Bising & riuh", "Bertenang, beradab dan insaf", "Pesta perayaan", "Bermain bola"], ans: 1, exp: "Kawasan kubur memerlukan suasana tenang dan penuh penghormatan." },
+          { q: "Apakah maksud potongan ucapan salam 'أَنْتُمْ سَلَفُنَا ، وَنَحْنُ بِالأَثَرِ'?", opts: ["Kamu telah mendahului kami & kami akan menyusul", "Kamu hidup selamanya", "Kami tidak akan mati", "Selamat tinggal"], ans: 0, exp: "Lafaz mengingatkan bahawa setiap yang hidup pasti akan menyusul mati." },
+          { q: "Berikut adalah adab di tanah perkuburan KECUALI:", opts: ["Menjaga kebersihan", "Mendoakan keampunan", "Bergelak ketawa dan ria", "Membantu penggali kubur"], ans: 2, exp: "Bergelak ketawa merupakan larangan keras di perkuburan." },
+          { q: "Apakah akibat orang yang menziarahi kubur tanpa adab?", opts: ["Jiwa insaf", "Tiada rasa keinsafan & tidak beramal", "Pahala berganda", "Disukai malaikat"], ans: 1, exp: "Tanpa adab, ziarah kubur tidak memberi sebarang kesan keinsafan." }
+        ]
+      },
+      {
+        id: 15,
+        title: "Adab Menziarahi Majlis Keramaian",
+        category: "Kemasyarakatan",
+        contoh: ["Rumah terbuka Hari Raya", "Majlis aqiqah", "Majlis perkahwinan", "Sambutan hari lahir"],
+        adab: ["Memberi salam.", "Berkenalan dengan tetamu lain.", "Duduk dengan tertib dan sopan.", "Menjaga pandangan."],
+        larangan: ["Tidak memberi salam.", "Berbisik-bisik.", "Duduk atau berdiri di tengah laluan.", "Menghina dan menyinggung perasaan orang lain."],
+        faedah: ["Dapat berkenalan dengan rakan baharu.", "Mengeratkan silaturahim.", "Dihormati oleh tuan rumah."],
+        akibat: ["Tetamu berasa tidak selesa dan terganggu.", "Dijauhi oleh tetamu lain.", "Menjadi buah mulut orang."],
+        adabMakan: ["Tidak membazir.", "Tidak berebut makanan."],
+        quiz: [
+          { q: "Manakah contoh Majlis Keramaian?", opts: ["Tidur dalam bilik", "Majlis Perkahwinan & Aqiqah", "Belajar sorang-sorang", "Solat bersendirian"], ans: 1, exp: "Perkahwinan, aqiqah, dan rumah terbuka adalah majlis keramaian." },
+          { q: "Apakah adab semasa mengambil makanan di majlis kenduri?", opts: ["Berebut-rebut", "Tidak membazir & ambil secara tertib", "Ambil terlalu banyak hingga buang", "Sorok makanan"], ans: 1, exp: "Ambil makanan sekadar perlu dan elakkan pembaziran." },
+          { q: "Mengapakah dilarang duduk atau berdiri di tengah laluan majlis?", opts: ["Menghalang laluan tetamu lain", "Kerana sejuk", "Kerana tempat bersih", "Tuan rumah suruh"], ans: 0, exp: "Menghalang laluan menimbulkan kesukaran pergerakan tetamu." },
+          { q: "Apakah kesan jika seseorang berbisik-bisik di hadapan tetamu lain?", opts: ["Menimbulkan rasa kurang selesa/syak wasangka", "Mengeratkan silaturahim", "Dipuji ramah", "Mendapat hadiah"], ans: 0, exp: "Berbisik-bisik mengguris hati dan mencetuskan syak wasangka." },
+          { q: "Apakah kelebihan beradab di majlis keramaian?", opts: ["Dihormati tuan rumah & tambah kenalan", "Dijauhi tetamu", "Menjadi buah mulut", "Orang benci"], ans: 0, exp: "Beradab menjadikan kehadiran kita dialu-alukan." },
+          { q: "Apakah adab pandangan mata semasa berada di majlis keramaian?", opts: ["Merenung orang lain", "Menjaga pandangan", "Mencari kesalahan orang", "Memandang tajam"], ans: 1, exp: "Menjaga pandangan adalah perintah agama dalam pergaulan." },
+          { q: "Jika makanan habis di meja buffet, apakah tindakan beradab?", opts: ["Marah tuan rumah", "Tunggu dengan sabar / maklumkan sopan", "Jerit kuat", "Baling pinggan"], ans: 1, exp: "Sentiasa bersabar dan maklumkan secara sopan kepada petugas." }
+        ]
+      },
+      {
+        id: 16,
+        title: "Adab Ketika Bermesyuarat",
+        category: "Masyarakat & Kerja",
+        maksudSosial: "Sosial bermaksud perkara yang berkaitan dengan masyarakat, hubungan persahabatan dan pergaulan dalam kehidupan harian.",
+        adab: ["Memberi pandangan yang bernas.", "Menerima teguran dengan baik.", "Menjadi pendengar yang baik.", "Menumpukan perhatian."],
+        larangan: ["Tidak menepati masa.", "Menimbulkan suasana tegang.", "Tidak memberi tumpuan.", "Menggunakan telefon ketika mesyuarat."],
+        faedah: ["Membantu menyelesaikan masalah.", "Mesyuarat dapat berjalan dengan lancar.", "Memberi kesenangan kepada semua pihak."],
+        akibat: ["Menyusahkan orang lain.", "Mesyuarat menjadi huru-hara.", "Tidak mencapai keputusan yang baik."],
+        quiz: [
+          { q: "Apakah maksud Sosial?", opts: ["Perkara berkaitan alam", "Perkara berkaitan masyarakat & hubungan pergaulan", "Hal perniagaan sahaja", "Main permainan video"], ans: 1, exp: "Sosial merujuk kepada perhubungan manusia dalam masyarakat." },
+          { q: "Apakah tindakan betul jika pandangan kita ditegur dalam mesyuarat?", opts: ["Marah dan mengamuk", "Menerima teguran dengan hati terbuka", "Keluar dari bilik", "Tidur"], ans: 1, exp: "Ahli mesyuarat yang beradab bersedia menerima teguran positif." },
+          { q: "Apakah perlakuan TERLARANG semasa mesyuarat berlangsung?", opts: ["Memberi tumpuan", "Menggunakan telefon bimbit / bermain game", "Mencatat keputusan", "Mendengar baik"], ans: 1, exp: "Main telefon menunjukkan sikap tidak menghormati mesyuarat." },
+          { q: "Mengapakah ketepatan masa amat penting dalam mesyuarat?", opts: ["Supaya tidak menyusahkan dan membuang masa orang lain", "Supaya boleh balik awal", "Sebab dipaksa", "Supaya dpt makan"], ans: 0, exp: "Menepati masa menunjukkan profesionalisme dan adab." },
+          { q: "Apakah faedah mesyuarat yang dijalankan secara beradab?", opts: ["Mesyuarat jdi huru-hara", "Membantu menyelesaikan masalah dengan lancar", "Tiada keputusan", "Ahli bergaduh"], ans: 1, exp: "Adab yang baik menghasilkan keputusan mesyuarat yang berkualiti." },
+          { q: "Bagaimanakah cara memberi pendapat yang baik?", opts: ["Secara sopan dan bernas", "Secara tengkingan", "Memotong cakap pengerusi", "Menghina cadangan lain"], ans: 0, exp: "Pendapat disampaikan secara rasional, sopan dan jelas." },
+          { q: "Apakah akibat mesyuarat tanpa kawalan adab?", opts: ["Berjalan lancar", "Mesyuarat huru-hara & gagal capai keputusan", "Disukai ramai", "Mendapat sijil"], ans: 1, exp: "Tanpa adab, perbincangan bertukar menjadi perkelahian." }
+        ]
+      },
+      {
+        id: 17,
+        title: "Adab Berkomunikasi Melalui Media Sosial",
+        category: "Teknologi & Digital",
+        maksud: "Media sosial ialah aplikasi dalam talian yang membolehkan pengguna berhubung dengan individu lain sama ada yang dikenali atau tidak.",
+        contoh: ["YouTube", "WhatsApp", "Facebook", "Instagram", "TikTok"],
+        adab: ["Menjaga batasan pergaulan.", "Menjadi pendengar/pembaca yang baik.", "Menggunakan bahasa yang sopan.", "Tidak menyebarkan fitnah."],
+        larangan: ["Menyampaikan maklumat yang tidak benar (hoaks).", "Berkata tidak sopan / mencaci.", "Bergaduh di alam maya.", "Berkongsi gambar yang tidak baik/aib."],
+        faedah: ["Menjalin kemesraan.", "Dapat bertukar pendapat.", "Menambah kenalan."],
+        akibat: ["Dijauhi rakan.", "Dibenci orang lain.", "Lahir perasaan hasad dengki dan dendam."],
+        quiz: [
+          { q: "Apakah maksud Media Sosial?", opts: ["Buku cerita basah", "Aplikasi dalam talian untuk berhubung dengan individu lain", "Televisyen lama", "Radio buruk"], ans: 1, exp: "Media sosial ialah platform perhubungan digital interaktif." },
+          { q: "Apakah tindakan wajib sebelum berkongsi (share) sesuatu berita?", opts: ["Terus share", "Pastikan maklumat benar & tidak fitnah", "Tambah cerita bohong", "Padam maklumat"], ans: 1, exp: "Periksa kesahihan maklumat elak sebar fitnah (Tabayyun)." },
+          { q: "Manakah contoh aplikasi media sosial popular?", opts: ["WhatsApp, TikTok, YouTube", "Microsoft Word", "Kalkulator", "Peta Google"], ans: 0, exp: "WhatsApp, TikTok dan YouTube antara medium sosial utama." },
+          { q: "Apakah bahasa yang perlu digunakan dalam ruangan komen?", opts: ["Bahasa kesat", "Bahasa yang sopan dan murni", "Bahasa ejekan", "Bahasa kasar"], ans: 1, exp: "Penulisan mencerminkan peribadi diri dan beradab." },
+          { q: "Apakah akibat buruk membuli secara siber (cyberbullying)?", opts: ["Dapat kawan", "Dibenci & melahirkan dendam/dosa", "Dikasihi Allah", "Mendapat hadiah"], ans: 1, exp: "Buli siber merosakkan jiwa dan mendatangkan dosa besar." },
+          { q: "Bolehkah kita memuat naik gambar aib rakan?", opts: ["Boleh untuk bergurau", "HARAM & dilarang sama sekali", "Harus", "Sunat"], ans: 1, exp: "Menyebar atau menayang aib orang lain adalah dilarang keras." },
+          { q: "Apakah kebaikan media sosial jika digunakan dengan beradab?", opts: ["Sebar fitnah", "Menjalin kemesraan & bertukar pendapat bermanfaat", "Menculik", "Mencuri data"], ans: 1, exp: "Media sosial menjadi alat kebaikan jika diguna secara positif." }
+        ]
+      },
+      {
+        id: 18,
+        title: "Adab Bermain, Bersukan & Gotong-Royong",
+        category: "Aktiviti Fizikal",
+        adab: ["Bertolak ansur.", "Mengutamakan keselamatan.", "Mematuhi masa.", "Saling berkongsi tugas.", "Menggunakan peralatan dengan baik.", "Berpakaian sesuai.", "Memilih kawasan sesuai.", "Mengikuti peraturan.", "Membantu orang lain."],
+        larangan: ["Berebut peralatan.", "Bergaduh.", "Tidak sopan.", "Mengabaikan keselamatan.", "Melanggar arahan.", "Mengharapkan balasan."],
+        kelebihanSukan: ["Mengukuhkan semangat berpasukan.", "Menguatkan otot dan tulang.", "Mencergaskan badan."],
+        kelebihanGotongRoyong: ["Menjamin kebersihan persekitaran.", "Memudahkan tugas orang lain."],
+        akibatSukan: ["Menimbulkan suasana tegang.", "Mengganggu proses permainan."],
+        akibatGotongRoyong: ["Tidak dapat menyelesaikan kerja.", "Persekitaran menjadi kotor."],
+        quiz: [
+          { q: "Apakah adab pakaian semasa bermain atau bersukan?", opts: ["Pakaian ketat & singkat", "Berpakaian sesuai, menutup aurat & selesa", "Pakaian pejabat", "Baju kurung tebal"], ans: 1, exp: "Pakaian sukan mestilah sesuai dan menjaga batas aurat." },
+          { q: "Apakah sikap paling penting dalam permainan berpasukan?", opts: ["Pentingkan diri", "Bertolak ansur & semangat berpasukan", "Main tipu", "Sumpah seranah"], ans: 1, exp: "Semangat kerjasama membawa kejayaan pasukan." },
+          { q: "Manakah faedah utama aktiviti Gotong-Royong?", opts: ["Persekitaran kotor", "Menjamin kebersihan & memudahkan kerja", "Badan jadi letih teruk", "Bergaduh barang"], ans: 1, exp: "Gotong-royong membersihkan kawasan dan meringankan beban." },
+          { q: "Apakah perkara yang dilarang semasa menggunakan alat sukan/gotong-royong?", opts: ["Mengguna cermat", "Berebut-rebut peralatan", "Simpan semula", "Bersihkan alat"], ans: 1, exp: "Berebut peralatan boleh menyebabkan perkelahian dan kecederaan." },
+          { q: "Apakah faedah bersukan terhadap kesihatan fizikal?", opts: ["Menceraskan badan & menguatkan otot", "Membuat badan sakit", "Membawa penyakit", "Melumpuhkan badan"], ans: 0, exp: "Bersukan secara teratur menajamkan minda dan mencergaskan tubuh." },
+          { q: "Apakah akibat jika pemain mengabaikan arahan pengadil?", opts: ["Perlawanan lancar", "Menimbulkan suasana tegang & gangguan permainan", "Menang mudah", "Mendapat Anugerah"], ans: 1, exp: "Melanggar peraturan merosakkan keseronokan permainan." },
+          { q: "Apakah ikhlas dalam gotong-royong?", opts: ["Membuat kerja tanpa mengharapkan balasan", "Minta upah duit", "Meminta dipuji", "Kerja sikit riak banyak"], ans: 0, exp: "Kerja dilakukan secara sukarela demi kebaikan bersama." }
+        ]
+      },
+      {
+        id: 19,
+        title: "Adab Menjaga Harta Benda Awam",
+        category: "Kemudahan Awam",
+        maksud: "Harta benda awam ialah kemudahan yang disediakan untuk kegunaan bersama oleh masyarakat.",
+        contoh: ["Taman permainan", "Jalan raya", "Tandas awam", "Hentian bas", "Pondok telefon"],
+        adab: ["Menggunakan dengan cermat.", "Mematuhi peraturan.", "Menjaga kebersihan kemudahan awam.", "Meletakkan peralatan di tempat asal."],
+        larangan: ["Mencuri harta benda awam.", "Merosakkan kemudahan awam (Vandalisme).", "Membazir air.", "Tidak menjaga kebersihan."],
+        kelebihan: ["Menjimatkan kos penyelenggaraan.", "Memberi kemudahan kepada pengguna."],
+        akibat: ["Menyusahkan orang lain.", "Menyebabkan kemudahan awam rosak."],
+        quiz: [
+          { q: "Apakah maksud Harta Benda Awam?", opts: ["Barang dalam bilik sendiri", "Kemudahan untuk kegunaan bersama masyarakat", "Harta orang kaya", "Barang kedai runcit"], ans: 1, exp: "Kemudahan awam dibina untuk kegunaan semua orang." },
+          { q: "Manakah contoh kemudahan awam?", opts: ["Tandas awam, Taman permainan, Hentian bas", "Kereta bapa", "Kasut sendiri", "Peti ais rumah"], ans: 0, exp: "Tandas, perhentian bas dan taman permainan adalah milik awam." },
+          { q: "Apakah perbuatan merosakkan harta benda awam dikenali sebagai?", opts: ["Patriotisme", "Vandalisme", "Altruisme", "Silaturrahim"], ans: 1, exp: "Vandalisme ialah tabiat buruk merosakkan kemudahan awam." },
+          { q: "Bagaimanakah adab menggunakan air di tandas awam?", opts: ["Biar paip terbuka", "Menggunakan dengan cermat tanpa membazir", "Mandi 5 jam", "Kotor dinding"], ans: 1, exp: "Penggunaan cermat mengelakkan pembaziran dan kerosakan." },
+          { q: "Apakah faedah jika masyarakat menjaga kemudahan awam?", opts: ["Menjimatkan kos penyelenggaraan kerajaan/pihak berkuasa", "Menaikkan cukai", "Merusakkan bandar", "Menyusahkan orang"], ans: 0, exp: "Alatan yang dijaga tahan lama dan jimat kos pembaikan." },
+          { q: "Apakah akibat jika papan tanda jalan raya dirosakkan?", opts: ["Pengguna gembira", "Menyusahkan & membahayakan nyawa pengguna", "Jalan raya jadi cantik", "Mendapat hadiah"], ans: 1, exp: "Kerosakan papan tanda boleh menyebabkan kemalangan." },
+          { q: "Selepas menggunakan alatan di taman rekreasi, kita perlu:", opts: ["Tinggal bersepah", "Memastikan ia bersih dan dalam keadaan baik", "Patahkan alatan", "Bawa balik rumah"], ans: 1, exp: "Kemudahan perlu ditinggalkan bersih untuk pengguna berikutnya." }
+        ]
+      },
+      {
+        id: 20,
+        title: "Adab Memelihara & Memulihara Alam Sekitar",
+        category: "Alam Sekitar",
+        adab: ["Sentiasa menjaga kebersihan.", "Mengamalkan aktiviti kitar semula.", "Mengutip sampah dan membuang di tempat betul.", "Melaksanakan aktiviti penanaman semula."],
+        larangan: ["Membuang sampah merata-rata.", "Memburu haiwan yang dilindungi.", "Membuang bahan toksik ke tasik dan sungai.", "Melakukan pembakaran secara terbuka."],
+        kelebihan: ["Memperindah alam sekitar.", "Memelihara haiwan terancam daripada kepupusan.", "Menarik kedatangan pelancong."],
+        pencemaran: [
+          "<strong>Pencemaran Air:</strong> Sungai kotor, sumber minuman tercemar, hidupan air pupus.",
+          "<strong>Pencemaran Udara:</strong> Jerebu, hujan asid, pemanasan bumi.",
+          "<strong>Pencemaran Bunyi:</strong> Mengganggu pendengaran awam, menjejaskan deria.",
+          "<strong>Pencemaran Tanah:</strong> Kualiti tanah rosak, hakisan/tanah runtuh, pokok tidak subur.",
+          "<strong>Pencemaran Sisa Pepejal:</strong> Kesihatan terjejas, persekitaran kotor, banjir kilat."
+        ],
+        quiz: [
+          { q: "Apakah amalan 3R yang digalakkan untuk alam sekitar?", opts: ["Ronda, Rehat, Rawat", "Kitar Semula (Recycle, Reuse, Reduce)", "Rugi, Rusak, Runtuh", "Rasa, Raba, Racun"], ans: 1, exp: "Kitar semula mengurangkan jumlah pembuangan sampah." },
+          { q: "Apakah kesan buruk pembuangan sisa toksik ke dalam sungai?", opts: ["Air jadi jernih", "Sumber minuman tercemar & hidupan air pupus", "Ikan bertambah", "Udara segar"], ans: 1, exp: "Bahan kimia toksik membunuh hidupan akuatik dan meracuni air." },
+          { q: "Apakah fenomena akibat pembakaran terbuka secara meluas?", opts: ["Tsunami", "Jerebu & Pencemaran Udara", "Gempa bumi", "Salji"], ans: 1, exp: "Asap pembakaran menyebabkan jerebu dan pemanasan global." },
+          { q: "Bagaimanakah caranya kita memulihara kawasan bukit dan hutan?", opts: ["Tebang semua pokok", "Melaksanakan aktiviti penanaman semula pokok", "Bakar hutan", "Buang sampah"], ans: 1, exp: "Penanaman semula pokok mengekalkan ekosistem dan elak tanah runtuh." },
+          { q: "Manakah KECUALI jenis pencemaran alam?", opts: ["Pencemaran Air", "Pencemaran Udara", "Pencemaran Bintang", "Pencemaran Tanih/Tanah"], ans: 2, exp: "Pencemaran bintang bukan kategori pencemaran alam." },
+          { q: "Apakah kesan pencemaran sisa pepejal di dalam perparitan?", opts: ["Air mengalir lancar", "Menyebabkan banjir kilat & penyakit", "Ikan membesar", "Tanah subur"], ans: 1, exp: "Parit tersumbat menjadi punca utama banjir kilat di bandar." },
+          { q: "Apakah kelebihan alam sekitar yang indah dan bersih?", opts: ["Menarik kedatangan pelancong & sihat", "Banyak nyamuk", "Udara berbau busuk", "Penyakit merebak"], ans: 0, exp: "Alam sekitar yang segar menarik pelancongan dan menyihatkan badan." }
+        ]
+      },
+      {
+        id: 21,
+        title: "Adab Masuk & Keluar Masjid",
+        category: "Ibadah & Masjid",
+        adab: ["Berpakaian bersih dan wangi.", "Membaca doa.", "Melangkah masuk dengan kaki kanan.", "Bersalaman dengan jemaah lain.", "Melangkah keluar dengan kaki kiri.", "Mematikan suis elektrik selepas digunakan."],
+        larangan: ["Berpakaian kotor.", "Tidak membaca doa.", "Tidak menutup aurat.", "Tidak mematikan suis elektrik selepas guna."],
+        kelebihan: ["Dapat melaksanakan ibadah dengan selesa.", "Mewujudkan suasana tenang & harmoni.", "Mengeratkan silaturahim."],
+        akibat: ["Berlaku pembaziran elektrik.", "Mengurangkan jemaah ke masjid.", "Menyebabkan jemaah lain terganggu."],
+        doa: {
+          masuk: { ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", tr: "\"Ya Allah, bukalah pintu-pintu rahmat-Mu untukku.\"" },
+          keluar: { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", tr: "\"Ya Allah, sesungguhnya aku memohon kepada-Mu kurniaan daripada-Mu.\"" }
+        },
+        quiz: [
+          { q: "Dengan kaki manakah sunnah melangkah MASUK ke dalam masjid?", opts: ["Kaki kiri", "Kaki kanan", "Dua-dua kaki melompat", "Mana-mana kaki"], ans: 1, exp: "Sunnah masuk ke tempat mulia (masjid) dengan kaki kanan." },
+          { q: "Apakah doa ketika melangkah MASUK ke masjid?", opts: ["اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", "اللَّهُمَّ بَارِكْ لَنَا", "بِسْمِ اللَّهِ تَوَكَّلْتُ", "الْحَمْدُ لِلَّهِ"], ans: 0, exp: "Doa masuk masjid memohon dibukakan pintu rahmat Allah." },
+          { q: "Dengan kaki manakah sunnah melangkah KELUAR dari masjid?", opts: ["Kaki kanan", "Kaki kiri", "Kaki bersilang", "Lari"], ans: 1, exp: "Sunnah keluar dari masjid dimulakan dengan kaki kiri." },
+          { q: "Apakah pakaian yang sepatutnya dipakai ke masjid?", opts: ["Pakaian sukan kotor", "Berpakaian bersih, menutup aurat & wangi", "Baju tidur", "Pakaian basah"], ans: 1, exp: "Disunatkan memakai pakaian terbaik, suci dan wangi ke rumah Allah." },
+          { q: "Apakah adab terhadap penggunaan suis kipas/lampu di masjid?", opts: ["Biar terpasang 24 jam", "Mematikan suis selepas digunakan", "Rosakkan suis", "Bawa balik suis"], ans: 1, exp: "Mematikan suis elak pembaziran wang derma masjid." },
+          { q: "Apakah kelebihan beradab di rumah Allah?", opts: ["Jemaah terganggu", "Ibadah selesa, suasana tenang & erat ukhwah", "Banyak dosa", "Dimurkai Allah"], ans: 1, exp: "Adab yang baik mewujudkan ketenangan ibadah jemaah." },
+          { q: "Apakah maksud doa keluar masjid 'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ'?", opts: ["Ampunkan dosaku", "Aku memohon kurniaan daripada-Mu", "Berikan aku makanan", "Selamatkan rumahku"], ans: 1, exp: "Doa keluar masjid memohon kurniaan dan keberkatan rezeki." }
+        ]
+      },
+      {
+        id: 22,
+        title: "Adab Beriktikaf di Dalam Masjid",
+        category: "Ibadah & Masjid",
+        maksud: "Iktikaf bermaksud berada atau tinggal di dalam masjid dengan niat beribadah kepada Allah SWT.",
+        adab: ["Berniat iktikaf.", "Menjaga kebersihan.", "Duduk secara sopan dan tertib.", "Berzikir, solat sunat dan membaca Al-Quran."],
+        larangan: ["Tidak menjaga kebersihan.", "Mengganggu orang lain.", "Melakukan perkara membatalkan iktikaf."],
+        batal: ["Murtad", "Berhadas besar", "Hilang akal", "Meninggalkan masjid dengan sengaja tanpa hajat"],
+        kelebihan: ["Menanam rasa cinta akan masjid.", "Mendapat ketenangan hati.", "Terpelihara daripada maksiat.", "Dapat berkenalan dengan orang lain."],
+        akibat: ["Mengganggu keselesaan jemaah lain.", "Tidak menghormati kemuliaan masjid."],
+        niat: {
+          arabic: "نَوَيْتُ الِاعْتِكَافَ فِي هَذَا الْمَسْجِدِ لِلَّهِ تَعَالَى",
+          translation: "\"Sahaja aku beriktikaf di dalam masjid ini kerana Allah Taala.\""
+        },
+        quiz: [
+          { q: "Apakah maksud Iktikaf?", opts: ["Bermain di perkarangan masjid", "Berada/tinggal di dalam masjid dengan niat ibadah", "Tidur sepanjang hari di masjid", "Bermesyuarat hal dunia"], ans: 1, exp: "Iktikaf ialah tinggal di dalam masjid khusus untuk beribadah." },
+          { q: "Manakah aktiviti utama yang SUNAT dilakukan semasa iktikaf?", opts: ["Berzikir, solat sunat & membaca Al-Quran", "Bercakap hal perniagaan", "Main game telefon", "Tidur nyenyak"], ans: 0, exp: "Pengisian iktikaf ialah dengan memperbanyakkan zikir dan Al-Quran." },
+          { q: "Manakah perkara yang MEMBATALKAN iktikaf?", opts: ["Membaca Al-Quran", "Meninggalkan masjid dengan sengaja tanpa hajat", "Berwuduk", "Solat sunat"], ans: 1, exp: "Keluar masjid tanpa sebarang hajat mendesak membatalkan iktikaf." },
+          { q: "Lafaz niat iktikaf 'نَوَيْتُ الِاعْتِكَافَ...' berniat kerana siapa?", opts: ["Kerana manusia", "Kerana Allah Taala", "Kerana imam", "Kerana terpaksa"], ans: 1, exp: "Niat ibadah iktikaf wajib dilakukan ikhlas kerana Allah Taala." },
+          { q: "Berikut adalah faedah beriktikaf KECUALI:", opts: ["Mendapat ketenangan hati", "Menanam cinta akan masjid", "Mendapat kemurkaan Allah", "Terpelihara dari maksiat"], ans: 2, exp: "Mendapat kemurkaan bukan faedah iktikaf." },
+          { q: "Apakah syarat sah iktikaf yang pertama?", opts: ["Membawa bantal", "Niat iktikaf", "Perut kenyang", "Membawa wang"], ans: 1, exp: "Niat merupakan rukun utama iktikaf di masjid." },
+          { q: "Bagaimanakah sikap duduk jemaah yang beriktikaf?", opts: ["Baring terlentang di laluan solat", "Sopan, tertib & tidak mengganggu jemaah lain", "Bermain loncat-loncat", "Menjerit"], ans: 1, exp: "Menjaga sopan santun menjaga kemuliaan tempat suci masjid." }
+        ]
+      },
+      {
+        id: 23,
+        title: "Adab Dalam Majlis Ilmu",
+        category: "Pendidikan & Ibadah",
+        maksud: "Majlis ilmu ialah sesuatu perhimpunan atau kelas pengajian yang berkaitan dengan ilmu Islam.",
+        adab: ["Duduk dengan tertib dan sopan.", "Memenuhkan tempat yang disediakan (saf depan).", "Bersalaman dengan orang yang dekat.", "Berpakaian bersih dan sesuai.", "Meminta izin sekiranya hendak bertanya.", "Memberi perhatian."],
+        larangan: ["Berbisik-bisik.", "Mengganggu keselesaan orang lain.", "Mencelah percakapan guru mengajar.", "Tidak memberi perhatian."],
+        kelebihan: ["Mudah memahami ilmu yang diterima.", "Mendapat ilmu pengetahuan baharu.", "Boleh berkongsi ilmu dengan orang lain."],
+        akibat: ["Menyebabkan guru berasa tidak dihormati.", "Menyampaikan ilmu yang salah.", "Tidak memahami ilmu yang diajar."],
+        quiz: [
+          { q: "Apakah maksud Majlis Ilmu?", opts: ["Perhimpunan konsert muzik", "Perhimpunan atau kelas pengajian ilmu Islam", "Majlis makan-makan", "Pasar malam"], ans: 1, exp: "Majlis ilmu ialah perhimpunan menuntut ilmu agama." },
+          { q: "Apakah adab tempat duduk semasa menyertai majlis ilmu?", opts: ["Duduk paling belakang sekali walaupun depan kosong", "Memenuhkan ruang/saf hadapan terlebih dahulu", "Duduk atas meja", "Tidur di tepi wall"], ans: 1, exp: "Sunnah memenuhkan ruang kosong di hadapan terlebih dahulu." },
+          { q: "Apakah yang perlu dilakukan jika ingin mengajukan soalan kepada penceramah?", opts: ["Menjerit memotong percakapan", "Meminta izin terlebih dahulu dengan sopan", "Baling kertas", "Marah-marah"], ans: 1, exp: "Meminta izin mengelakkan gangguan penyampaian guru." },
+          { q: "Apakah perlakuan TERLARANG semasa ustaz/guru sedang menyampaikan ilmu?", opts: ["Mencatat nota", "Berbisik-bisik & mencelah percakapan", "Mendengar fokus", "Duduk sopan"], ans: 1, exp: "Berbisik dan mencelah adalah tanda tidak beradab dengan guru." },
+          { q: "Apakah kelebihan orang yang beradab dalam majlis ilmu?", opts: ["Mudah faham ilmu & diberkati", "Susah faham", "Dosa bertambah", "Guru benci"], ans: 0, exp: "Keberkatan adab memudahkan kefahaman ilmu." },
+          { q: "Apakah akibat buruk jika murid belajar tanpa memberi perhatian?", opts: ["Dapat ilmu baharu", "Tidak memahami ilmu & berisiko sebar ilmu salah", "Dihormati penceramah", "Jadi pakar"], ans: 1, exp: "Fokus yang lemah membawa kefahaman salah." },
+          { q: "Apakah pakaian sesuai ke majlis ilmu agama?", opts: ["Pakaian sukan basah", "Pakaian bersih, kemas & menutup aurat", "Pakaian costume", "Pakaian nipis"], ans: 1, exp: "Memakai pakaian kemas menghormati majlis ibadah ilmu." }
+        ]
+      },
+      {
+        id: 24,
+        title: "Adab Bersolat Jumaat & Hari Raya",
+        category: "Ibadah & Masjid",
+        adab: ["Datang awal ke masjid.", "Memakai pakaian yang bersih dan wangi.", "Bersalaman sesama jemaah.", "Tidak mengganggu jemaah lain."],
+        larangan: ["Lewat datang ke masjid.", "Melangkahi jemaah lain.", "Bercakap ketika khatib sedang menyampaikan khutbah.", "Bermain telefon ketika khutbah."],
+        kelebihan: ["Mengeratkan silaturrahim.", "Dapat memahami isi khutbah dengan baik.", "Dapat mendirikan solat dengan selesa."],
+        akibat: ["Jemaah lain berasa terganggu.", "Jemaah lain rasa tidak dihormati.", "Memutuskan silaturrahim sesama jemaah."],
+        persamaan: ["Dilakukan secara berjemaah.", "Mempunyai khutbah.", "Didirikan sebanyak 2 rakaat."],
+        quiz: [
+          { q: "Berapakah bilangan rakaat Solat Jumaat dan Solat Hari Raya?", opts: ["4 rakaat", "3 rakaat", "2 rakaat", "1 rakaat"], ans: 2, exp: "Kedua-dua solat ini didirikan sebanyak 2 rakaat." },
+          { q: "Apakah hukum bercakap semasa Khatib sedang membaca Khutbah Jumaat?", opts: ["Sunat", "HARAM / Lagha (Pahala Jumaat gugur)", "Harus", "Makruh sahaja"], ans: 1, exp: "Bercakap semasa khutbah menjadikan amalan Jumaat lagha (sia-sia)." },
+          { q: "Manakah persamaan antara Solat Jumaat dan Solat Hari Raya?", opts: ["Mempunyai khutbah & dilakukan berjemaah 2 rakaat", "Wajib pada waktu malam", "Tiada takbir", "Dilakukan di rumah sorang"], ans: 0, exp: "Kedua-duanya 2 rakaat berjemaah dan mengandungi khutbah." },
+          { q: "Apakah adab kedatangan ke masjid pada hari Jumaat?", opts: ["Datang selepas solat selesai", "Datang awal ke masjid", "Datang sewaktu iqamah", "Tidak perlu datang"], ans: 1, exp: "Datang awal mendapat ganjaran pahala yang sangat besar." },
+          { q: "Mengapakah dilarang melangkahi bahu jemaah lain yang sedang duduk?", opts: ["Sebab menyusahkan dan menyakiti jemaah lain", "Kerana tidak muat", "Sebab pakaian", "Sebab masjid kecil"], ans: 0, exp: "Melangkahi bahu jemaah dilarang kerana mengganggu keselesaan." },
+          { q: "Apakah akibat bermain telefon bimbit semasa khutbah dibaca?", opts: ["Dapat faham isi khutbah", "Hilang pahala Jumaat & terlepas peringatan khutbah", "Mendapat ganjaran", "Dipuji imam"], ans: 1, exp: "Main telefon merosakkan khusyuk dan tujuan khutbah." },
+          { q: "Apakah sunnah sebelum bertolak ke solat Jumaat/Hari Raya?", opts: ["Mandi sunat, berpakaian bersih & wangi", "Tidur hingga tengahari", "Makan gula-gula sahaja", "Bermain sukan"], ans: 0, exp: "Mandi sunat dan memakai wangi-wangian adalah sunnah muakkad." }
+        ]
+      },
+      {
+        id: 25,
+        title: "Adab Bersolat Tarawih",
+        category: "Ibadah & Ramadan",
+        adab: ["Datang awal ke masjid.", "Solat Isyak berjemaah terlebih dahulu.", "Melakukan solat witir berjemaah.", "Bertakbiratul ihram bersama imam setiap kali memulakan rakaat."],
+        larangan: ["Membuat bising di masjid.", "Bermain bunga api berhampiran kawasan masjid.", "Makan makanan yang disediakan sebelum jemaah selesai solat.", "Membazir makanan dan minuman."],
+        kelebihan: ["Dapat beribadah dengan selesa.", "Mewujudkan suasana yang tenang.", "Memuliakan bulan Ramadan."],
+        akibat: ["Jumlah jemaah masjid berkurang.", "Jemaah lain terganggu.", "Tidak merasai kemeriahan bulan Ramadan."],
+        quiz: [
+          { q: "Bilakah Solat Tarawih dilaksanakan?", opts: ["Bulan Syawal", "Bulan Ramadan selepas Solat Isyak", "Bulan Zulhijjah", "Bulan Muharram"], ans: 1, exp: "Solat Tarawih khusus dilakukan pada malam-malam bulan Ramadan." },
+          { q: "Apakah solat fardu yang WAJIB ditunaikan sebelum Solat Tarawih?", opts: ["Solat Subuh", "Solat Isyak", "Solat Asar", "Solat Maghrib"], ans: 1, exp: "Solat Tarawih dibuat selepas mendirikan solat fardu Isyak." },
+          { q: "Apakah perbuatan tidak beradab yang sering mengganggu jemaah tarawih?", opts: ["Membaca Quran", "Bermain bunga api & membuat bising di perkarangan masjid", "Berzikir", "Bersedekah"], ans: 1, exp: "Bermain bunga api menimbulkan kebingitan dan bahaya di masjid." },
+          { q: "Manakah solat penutup yang disunatkan secara berjemaah selepas Tarawih?", opts: ["Solat Dhuha", "Solat Witir", "Solat Tahajjud", "Solat Hajat"], ans: 1, exp: "Solat Witir dilakukan sebagai penutup amalan malam." },
+          { q: "Apakah adab jemaah terhadap makanan/moreh yang disediakan masjid?", opts: ["Membazir & berebut sebelum solat tamat", "Makan secara sopan selepas selesai solat & tidak membazir", "Bawa balik semua", "Buang makanan"], ans: 1, exp: "Santap makanan jamuan selepas solat dengan beradab tanpa pembaziran." },
+          { q: "Apakah kelebihan menjaga adab semasa Solat Tarawih?", opts: ["Mewujudkan suasana tenang & memuliakan Ramadan", "Masjid jadi kotor", "Jemaah lari", "Banyak dosa"], ans: 0, exp: "Adab yang baik mengimarahkan kesucian bulan Ramadan." },
+          { q: "Apakah tindakan betul jika kanak-kanak mengikut ibu bapa ke masjid untuk Tarawih?", opts: ["Berlari-lari & menjerit", "Menjaga tingkah laku & mengikut jemaah solat", "Merobek sejadah", "Main mercun"], ans: 1, exp: "Kanak-kanak hendaklah dididik beradab dan bertenang di masjid." }
+        ]
+      },
+      {
+        id: 26,
+        title: "Adab Menggunakan Kemudahan Masjid",
+        category: "Ibadah & Masjid",
+        adab: ["Menyimpan peralatan di tempat asal selepas digunakan.", "Memastikan tandas sentiasa bersih.", "Berjimat cermat menggunakan air dan tenaga elektrik.", "Menjaga kebersihan kawasan masjid."],
+        larangan: ["Merosakkan kemudahan yang disediakan.", "Menghalang orang lain menggunakan kemudahan masjid.", "Menyalahgunakan peralatan masjid.", "Tidak meletakkan peralatan selepas digunakan."],
+        kelebihan: ["Memastikan kebersihan masjid terjaga.", "Kemudahan masjid dapat dinikmati bersama.", "Masjid menjadi tempat berkumpul."],
+        akibat: ["Masjid menjadi kotor.", "Imej masjid tercemar.", "Kos penyelenggaraan masjid meningkat."],
+        quiz: [
+          { q: "Selepas membaca Al-Quran/Rehal di masjid, kita hendaklah:", opts: ["Tinggal atas lantai", "Menyimpan di tempat asal dengan kemas", "Bawa balik rumah", "Sorok bawah karpet"], ans: 1, exp: "Peralatan masjid mesti diletakkan semula di rak asal." },
+          { q: "Bagaimanakah adab menggunakan air wuduk di masjid?", opts: ["Buka paip paling maksimum", "Berjimat cermat tanpa membazir", "Main simbah air", "Biar paip bocor"], ans: 1, exp: "Islam melarang pembaziran air walaupun di sungai yang mengalir." },
+          { q: "Apakah kesan jika tandas masjid tidak dibersihkan selepas guna?", opts: ["Masjid jadi wangi", "Imej masjid tercemar & kotor", "Jemaah bertambah", "Mendapat ganjaran"], ans: 1, exp: "Tandas kotor merosakkan imej kesucian rumah Allah." },
+          { q: "Manakah perbuatan yang MENYALAHGUNAKAN kemudahan masjid?", opts: ["Mengguna sejadah untuk solat", "Mencas telefon peribadi berjam-jam tanpa izin/tujuan masjid", "Minum air penapis", "Guna tandas"], ans: 1, exp: "Menyalahguna elektrik masjid untuk kepentingan peribadi secara berlebihan perlu dielakkan." },
+          { q: "Apakah kelebihan jika semua jemaah menjaga kemudahan masjid?", opts: ["Kemudahan dapat dinikmati bersama & tahan lama", "Kos penyelenggaraan naik", "Masjid ditutup", "Peralatan cepat rosak"], ans: 0, exp: "Kemudahan awam masjid terjaga untuk kebaikan bersama." },
+          { q: "Apakah akibat vandalisme terhadap peralatan masjid?", opts: ["Kos penyelenggaraan meningkat", "Masjid makin kaya", "Pahala bertambah", "Orang suka"], ans: 0, exp: "Kerosakan memaksa pihak masjid mengeluarkan kos pembaikan yang tinggi." },
+          { q: "Bagaimanakah kita menjaga kebersihan dewan solat utama?", opts: ["Membuang plastik makanan di karpet", "Memastikan tiada sampah & tidak membawa makanan basah", "Meninggalkan tisu", "Menconteng tiang"], ans: 1, exp: "Dewan solat mesti sentiasa suci dan bebas daripada kotoran." }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       WEB AUDIO API SOUND SYNTHESIZER (NO EXTERNAL AUDIO FILES NEEDED)
+       ========================================================================== */
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      }
+
+      playCorrect() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+
+        // Arpeggio C5 -> E5 -> G5 -> C6
+        osc1.frequency.setValueAtTime(523.25, now);
+        osc1.frequency.setValueAtTime(659.25, now + 0.08);
+        osc1.frequency.setValueAtTime(783.99, now + 0.16);
+        osc1.frequency.setValueAtTime(1046.50, now + 0.24);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc1.stop(now + 0.5);
+      }
+
+      playWrong() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playVictory() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [440, 554.37, 659.25, 880]; // A Major Fanfare
+        
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          
+          gain.gain.setValueAtTime(0.15, now + (i * 0.12));
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (i * 0.12) + 0.4);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.start(now + (i * 0.12));
+          osc.stop(now + (i * 0.12) + 0.4);
+        });
+      }
+    }
+
+    const sound = new SoundFX();
+
+    /* ==========================================================================
+       APPLICATION STATE & ENGINE LOGIC
+       ========================================================================== */
+    let currentChapterIdx = 0;
+    let isQuizMode = false;
+    let currentQuizQIdx = 0;
+    let quizScore = 0;
+    let userAnswers = [];
+
+    // DOM Elements
+    const mainContent = document.getElementById('mainContent');
+    const progressBar = document.getElementById('progressBar');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnStartQuiz = document.getElementById('btnStartQuiz');
+    const menuModal = document.getElementById('menuModal');
+    const chapterMenuList = document.getElementById('chapterMenuList');
+    const btnOpenMenu = document.getElementById('btnOpenMenu');
+    const btnCloseMenu = document.getElementById('btnCloseMenu');
+    const btnSoundToggle = document.getElementById('btnSoundToggle');
+
+    // Initialize Application
+    function initApp() {
+      renderChapterMenu();
+      loadChapter(0);
+      setupEventListeners();
+    }
+
+    // Render Chapter Notes Screen
+    function loadChapter(index) {
+      if (index < 0 || index >= notesData.length) return;
+      currentChapterIdx = index;
+      isQuizMode = false;
+
+      const data = notesData[index];
+
+      // Update progress bar
+      const pct = ((index + 1) / notesData.length) * 100;
+      progressBar.style.width = `${pct}%`;
+
+      // Update Nav Buttons
+      btnPrev.disabled = index === 0;
+      btnPrev.style.opacity = index === 0 ? '0.5' : '1';
+      btnNext.style.display = 'flex';
+      btnStartQuiz.style.display = 'flex';
+
+      let html = `
+        <div style="animation: fadeIn 0.3s ease;">
+          <span class="chapter-badge">BAB ${data.id} / ${notesData.length} • ${data.category}</span>
+          <div class="lesson-kicker">🌟 JOM BELAJAR!</div>
+          <h2 class="chapter-title">${data.title}</h2>
+      `;
+
+      // Pengertian / Definition
+      if (data.pengertian) {
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-book-open"></i> Pengertian & Maksud</div>
+            <ul class="custom-list">
+              ${data.pengertian.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Golongan / Kategori
+      if (data.golongan || data.kategori || data.contoh) {
+        const items = data.golongan || data.kategori || data.contoh;
+        const title = data.golongan ? "Golongan Terlibat" : (data.kategori ? "Kategori OKU" : "Contoh Majlis / Senarai");
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-shapes"></i> ${title}</div>
+            <div style="display:flex; flex-wrap:wrap;">
+              ${items.map(i => `<span class="badge-tag badge-blue">${i}</span>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Interactive Tap-To-Reveal Card: Adab & Amalan
+      if (data.adab) {
+        html += `
+          <div class="reveal-card" onclick="toggleReveal(this)">
+            <div class="reveal-hint"><i class="fa-solid fa-hand-pointer"></i> Sentuh (Tap) Untuk Lihat Adab & Amalan</div>
+            <div class="reveal-content">
+              <div class="card-title" style="color:#059669;"><i class="fa-solid fa-circle-check"></i> Adab & Amalan Terpuji</div>
+              <ul class="custom-list">
+                ${data.adab.map(a => `<li>${a}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `;
+      }
+
+      // Doa or Hadis Box
+      if (data.doa || data.hadis || data.salam || data.niat) {
+        const item = data.doa || data.hadis || data.salam || data.niat;
+        html += `
+          <div class="card" style="background: #FAF5FF; border-color: #E9D5FF;">
+            <div class="card-title" style="color: var(--purple);"><i class="fa-solid fa-scroll"></i> ${item.title || 'Lafaz Doa / Hadis / Salam'}</div>
+        `;
+        
+        if (item.arabic) {
+          html += `
+            <div class="arabic-box">
+              <div class="arabic-text">${item.arabic}</div>
+              <div class="translation-text">${item.translation}</div>
+            </div>
+          `;
+        } else {
+          // Sub-doa like in Hadis Kematian / Hospital / Doa Masjid
+          for (let k in item) {
+            if (typeof item[k] === 'object' && item[k].ar) {
+              html += `
+                <div class="arabic-box">
+                  <div class="arabic-text">${item[k].ar}</div>
+                  <div class="translation-text">${item[k].tr}</div>
+                </div>
+              `;
+            }
+          }
+        }
+
+        html += `</div>`;
+      }
+
+      // Larangan / Perkara Dihindari
+      if (data.larangan || data.dihindari) {
+        const badItems = data.larangan || data.dihindari;
+        html += `
+          <div class="card" style="border-left: 4px solid var(--wrong);">
+            <div class="card-title" style="color: var(--wrong);"><i class="fa-solid fa-triangle-exclamation"></i> Larangan & Dihindari</div>
+            <ul class="custom-list bad-list">
+              ${badItems.map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Faedah / Kelebihan / Kepentingan
+      if (data.faedah || data.kelebihan || data.kepentinganKebersihan || data.kelebihanSukan) {
+        const goodList = data.faedah || data.kelebihan || data.kepentinganKebersihan || data.kelebihanSukan;
+        html += `
+          <div class="card" style="border-left: 4px solid var(--secondary);">
+            <div class="card-title" style="color: #0D9488;"><i class="fa-solid fa-star"></i> Faedah & Hikmah Beradab</div>
+            <ul class="custom-list">
+              ${goodList.map(g => `<li>${g}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Akibat Tidak Beradab
+      if (data.akibat || data.akibatKotor || data.akibatLanggarPeraturan || data.akibatSukan) {
+        const badConsequences = data.akibat || data.akibatKotor || data.akibatLanggarPeraturan || data.akibatSukan;
+        html += `
+          <div class="card" style="background: #FFF5F5;">
+            <div class="card-title" style="color: #C53030;"><i class="fa-solid fa-circle-xmark"></i> Akibat Tidak Beradab</div>
+            <ul class="custom-list bad-list">
+              ${badConsequences.map(c => `<li>${c}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Sub-sections like Hospital/Pencemaran/Mahram/Hak Jiran
+      if (data.hak) {
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Hak Jiran Perlu Dipelihara</div>
+            <ul class="custom-list">${data.hak.map(h => `<li>${h}</li>`).join('')}</ul>
+          </div>
+        `;
+      }
+
+      if (data.mahram) {
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-users-rays"></i> Senarai Mahram</div>
+            <div style="display:flex; flex-wrap:wrap;">${data.mahram.map(m => `<span class="badge-tag badge-green">${m}</span>`).join('')}</div>
+          </div>
+        `;
+      }
+
+      if (data.buahTanganXsesuai) {
+        html += `
+          <div class="card">
+            <div class="card-title" style="color:var(--wrong);"><i class="fa-solid fa-ban"></i> Buah Tangan Tidak Sesuai (Hospital)</div>
+            <div style="display:flex; flex-wrap:wrap;">${data.buahTanganXsesuai.map(bt => `<span class="badge-tag badge-red">${bt}</span>`).join('')}</div>
+          </div>
+        `;
+      }
+
+      if (data.pencemaran) {
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-cloud-showers-heavy"></i> Kesan Pencemaran Alam</div>
+            <ul class="custom-list">${data.pencemaran.map(p => `<li>${p}</li>`).join('')}</ul>
+          </div>
+        `;
+      }
+
+      if (data.persamaan) {
+        html += `
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> Persamaan Solat Jumaat & Hari Raya</div>
+            <ul class="custom-list">${data.persamaan.map(ps => `<li>${ps}</li>`).join('')}</ul>
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+      mainContent.innerHTML = html;
+      mainContent.scrollTop = 0;
+      updateActiveMenuItem();
+    }
+
+    // Interactive Tap-to-Reveal
+    window.toggleReveal = function(element) {
+      element.classList.toggle('revealed');
+    }
+
+    /* ==========================================================================
+       QUIZ ENGINE LOGIC
+       ========================================================================== */
+    function startQuizMode() {
+      isQuizMode = true;
+      currentQuizQIdx = 0;
+      quizScore = 0;
+      userAnswers = [];
+      btnStartQuiz.style.display = 'none';
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const chapter = notesData[currentChapterIdx];
+      const questions = chapter.quiz;
+
+      if (currentQuizQIdx >= questions.length) {
+        renderQuizResult();
+        return;
+      }
+
+      const qData = questions[currentQuizQIdx];
+      const qNum = currentQuizQIdx + 1;
+
+      let html = `
+        <div class="quiz-card" style="animation: fadeIn 0.3s ease;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="quiz-q-num">Soalan ${qNum} daripada ${questions.length}</span>
+            <span class="badge-tag badge-blue">Bab ${chapter.id}</span>
+          </div>
+          <div class="quiz-q-text">${qData.q}</div>
+
+          <div id="optionsContainer">
+            ${qData.opts.map((opt, idx) => `
+              <button class="quiz-option" onclick="selectAnswer(${idx})">
+                <span style="width:24px; height:24px; border-radius:50%; background:#E2E8F0; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">${String.fromCharCode(65 + idx)}</span>
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+
+          <div id="explanationBox" class="explanation-box"></div>
+        </div>
+      `;
+
+      mainContent.innerHTML = html;
+      btnNext.style.display = 'none'; // Controlled by answer tap
+    }
+
+    window.selectAnswer = function(optIdx) {
+      const chapter = notesData[currentChapterIdx];
+      const qData = chapter.quiz[currentQuizQIdx];
+      const options = document.querySelectorAll('.quiz-option');
+      const expBox = document.getElementById('explanationBox');
+
+      // Disable option buttons
+      options.forEach(btn => btn.style.pointerEvents = 'none');
+
+      const isCorrect = (optIdx === qData.ans);
+
+      if (isCorrect) {
+        options[optIdx].classList.add('correct-opt');
+        sound.playCorrect();
+        quizScore++;
+        expBox.className = 'explanation-box correct';
+        expBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> SYABAS! JAWAPAN BETUL 🎉</strong><br>${qData.exp}`;
+      } else {
+        options[optIdx].classList.add('wrong-opt');
+        options[qData.ans].classList.add('correct-opt');
+        sound.playWrong();
+        expBox.className = 'explanation-box wrong';
+        expBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> HAMPIR BETUL! 🌱</strong><br>${qData.exp}`;
+      }
+
+      expBox.style.display = 'block';
+
+      // Auto advance to next question after 2.2 seconds
+      setTimeout(() => {
+        currentQuizQIdx++;
+        renderQuizQuestion();
+      }, 2300);
+    }
+
+    function renderQuizResult() {
+      const chapter = notesData[currentChapterIdx];
+      const totalQ = chapter.quiz.length;
+      const percentage = Math.round((quizScore / totalQ) * 100);
+
+      let stars = "⭐⭐⭐";
+      if (percentage < 50) stars = "⭐";
+      else if (percentage < 80) stars = "⭐⭐";
+
+      if (percentage >= 80) sound.playVictory();
+
+      let html = `
+        <div class="card result-box" style="animation: fadeIn 0.4s ease;">
+          <div class="result-stars">${stars}</div>
+          <h2 style="font-family:'Fredoka',sans-serif; margin-bottom:8px; color:var(--text-dark);">Keputusan Kuiz Bab ${chapter.id}</h2>
+          <div class="result-score">${quizScore} / ${totalQ}</div>
+          <div class="result-percent">Skor Akhir: ${percentage}%</div>
+
+          <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">
+            ${percentage >= 80 ? 'Tahniah! Anda telah menguasai adab ini dengan sangat cemerlang!' : 'Bagus! Ulang kaji semula nota bab ini untuk dapatkan skor penuh!'}
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="nav-btn btn-next" onclick="startQuizMode()" style="width:100%;">
+              <i class="fa-solid fa-rotate-right"></i> Cuba Kuiz Semula
+            </button>
+            <button class="nav-btn btn-prev" onclick="loadChapter(currentChapterIdx)" style="width:100%;">
+              <i class="fa-solid fa-book"></i> Kembali Ke Nota Bab
+            </button>
+          </div>
+        </div>
+      `;
+
+      mainContent.innerHTML = html;
+    }
+
+    /* ==========================================================================
+       MODAL MENU & NAVIGATION LISTENERS
+       ========================================================================== */
+    function renderChapterMenu() {
+      let html = '';
+      notesData.forEach((ch, idx) => {
+        html += `
+          <div class="chapter-select-item" id="menuItem-${idx}" onclick="selectChapterFromMenu(${idx})">
+            <span>Bab ${ch.id}: ${ch.title}</span>
+            <i class="fa-solid fa-chevron-right" style="font-size:12px; color:#94A3B8;"></i>
+          </div>
+        `;
+      });
+      chapterMenuList.innerHTML = html;
+    }
+
+    function updateActiveMenuItem() {
+      document.querySelectorAll('.chapter-select-item').forEach((el, idx) => {
+        if (idx === currentChapterIdx) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+    }
+
+    window.selectChapterFromMenu = function(idx) {
+      loadChapter(idx);
+      closeMenuModal();
+    }
+
+    function openMenuModal() {
+      menuModal.classList.add('active');
+    }
+
+    function closeMenuModal() {
+      menuModal.classList.remove('active');
+    }
+
+    function setupEventListeners() {
+      btnNext.addEventListener('click', () => {
+        if (currentChapterIdx < notesData.length - 1) {
+          loadChapter(currentChapterIdx + 1);
+        }
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (isQuizMode) {
+          loadChapter(currentChapterIdx);
+        } else if (currentChapterIdx > 0) {
+          loadChapter(currentChapterIdx - 1);
+        }
+      });
+
+      btnStartQuiz.addEventListener('click', () => {
+        startQuizMode();
+      });
+
+      btnOpenMenu.addEventListener('click', openMenuModal);
+      btnCloseMenu.addEventListener('click', closeMenuModal);
+      menuModal.addEventListener('click', (e) => {
+        if (e.target === menuModal) closeMenuModal();
+      });
+
+      btnSoundToggle.addEventListener('click', () => {
+        sound.muted = !sound.muted;
+        btnSoundToggle.innerHTML = sound.muted ? 
+          '<i class="fa-solid fa-volume-xmark" style="color:var(--wrong);"></i>' : 
+          '<i class="fa-solid fa-volume-high"></i>';
+      });
+    }
+
+    // Run Application
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
